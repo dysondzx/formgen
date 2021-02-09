@@ -8,26 +8,6 @@
       <el-scrollbar class="right-scrollbar">
         <!-- 组件属性 -->
         <el-form v-show="currentTab==='field' && showField" size="small" label-width="90px">
-          <el-form-item v-if="activeData.__config__.changeTag" label="组件类型">
-            <el-select
-              v-model="activeData.__config__.tagIcon"
-              placeholder="请选择组件类型"
-              :style="{width: '100%'}"
-              @change="tagChange"
-            >
-              <el-option-group v-for="group in tagList" :key="group.label" :label="group.label">
-                <el-option
-                  v-for="item in group.options"
-                  :key="item.__config__.label"
-                  :label="item.__config__.label"
-                  :value="item.__config__.tagIcon"
-                >
-                  <svg-icon class="node-icon" :icon-class="item.__config__.tagIcon" />
-                  <span> {{ item.__config__.label }}</span>
-                </el-option>
-              </el-option-group>
-            </el-select>
-          </el-form-item>
           <el-form-item v-if="activeData.__vModel__!==undefined" label="字段名">
             <el-input v-model="activeData.__vModel__" placeholder="请输入字段名（v-model）" />
           </el-form-item>
@@ -783,18 +763,6 @@ export default {
       }
       return []
     },
-    tagList() {
-      return [
-        {
-          label: '输入型组件',
-          options: inputComponents
-        },
-        {
-          label: '选择型组件',
-          options: selectComponents
-        }
-      ]
-    },
     activeTag() {
       return this.activeData.__config__.tag
     },
@@ -949,11 +917,6 @@ export default {
     },
     setIcon(val) {
       this.activeData[this.currentIconModel] = val
-    },
-    tagChange(tagIcon) {
-      let target = inputComponents.find(item => item.__config__.tagIcon === tagIcon)
-      if (!target) target = selectComponents.find(item => item.__config__.tagIcon === tagIcon)
-      this.$emit('tag-change', target)
     },
     changeRenderKey() {
       if (needRerenderList.includes(this.activeData.__config__.tag)) {

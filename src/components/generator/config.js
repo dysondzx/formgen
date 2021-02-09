@@ -20,14 +20,12 @@ export const inputComponents = [
       label: '单行文本',
       labelWidth: null,
       showLabel: true,
-      changeTag: true,
       tag: 'el-input',
       tagIcon: 'input',
       defaultValue: undefined,
       required: true,
       layout: 'colFormItem',
       span: 24,
-      document: 'https://element.eleme.cn/#/zh-CN/component/input',
       // 正则校验规则
       regList: []
     },
@@ -58,9 +56,7 @@ export const inputComponents = [
       required: true,
       layout: 'colFormItem',
       span: 24,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/input'
+      regList: []
     },
     type: 'textarea',
     placeholder: '请输入',
@@ -79,15 +75,13 @@ export const inputComponents = [
       label: '密码',
       showLabel: true,
       labelWidth: null,
-      changeTag: true,
       tag: 'el-input',
       tagIcon: 'password',
       defaultValue: undefined,
       layout: 'colFormItem',
       span: 24,
       required: true,
-      regList: [],
-      document: 'https://element.eleme.cn/#/zh-CN/component/input'
+      regList: []
     },
     __slot__: {
       prepend: '',
@@ -108,7 +102,6 @@ export const inputComponents = [
     __config__: {
       label: '计数器',
       showLabel: true,
-      changeTag: true,
       labelWidth: null,
       tag: 'el-input-number',
       tagIcon: 'number',
@@ -116,8 +109,7 @@ export const inputComponents = [
       span: 24,
       layout: 'colFormItem',
       required: true,
-      regList: [],
-      document: 'https://element.eleme.cn/#/zh-CN/component/input-number'
+      regList: []
     },
     placeholder: '',
     min: undefined,
@@ -132,7 +124,6 @@ export const inputComponents = [
     __config__: {
       label: '编辑器',
       showLabel: true,
-      changeTag: true,
       labelWidth: null,
       tag: 'tinymce',
       tagIcon: 'rich-text',
@@ -140,8 +131,7 @@ export const inputComponents = [
       span: 24,
       layout: 'colFormItem',
       required: true,
-      regList: [],
-      document: 'http://tinymce.ax-z.cn'
+      regList: []
     },
     placeholder: '请输入',
     height: 300, // 编辑器高度
@@ -161,9 +151,7 @@ export const selectComponents = [
       layout: 'colFormItem',
       span: 24,
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/select'
+      regList: []
     },
     __slot__: {
       options: [{
@@ -197,9 +185,7 @@ export const selectComponents = [
       dataType: 'dynamic',
       span: 24,
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/cascader'
+      regList: []
     },
     options: [{
       id: 1,
@@ -234,15 +220,13 @@ export const selectComponents = [
       showLabel: true,
       tag: 'el-radio-group',
       tagIcon: 'radio',
-      changeTag: true,
       defaultValue: undefined,
       layout: 'colFormItem',
       span: 24,
       optionType: 'default',
       regList: [],
       required: true,
-      border: false,
-      document: 'https://element.eleme.cn/#/zh-CN/component/radio'
+      border: false
     },
     __slot__: {
       options: [{
@@ -270,9 +254,7 @@ export const selectComponents = [
       optionType: 'default',
       required: true,
       regList: [],
-      changeTag: true,
-      border: false,
-      document: 'https://element.eleme.cn/#/zh-CN/component/checkbox'
+      border: false
     },
     __slot__: {
       options: [{
@@ -300,9 +282,7 @@ export const selectComponents = [
       labelWidth: null,
       layout: 'colFormItem',
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/switch'
+      regList: []
     },
     style: {},
     disabled: false,
@@ -324,9 +304,7 @@ export const selectComponents = [
       layout: 'colFormItem',
       labelWidth: null,
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/slider'
+      regList: []
     },
     disabled: false,
     min: 0,
@@ -346,9 +324,7 @@ export const selectComponents = [
       layout: 'colFormItem',
       labelWidth: null,
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/time-picker'
+      regList: []
     },
     placeholder: '请选择',
     style: { width: '100%' },
@@ -371,9 +347,7 @@ export const selectComponents = [
       layout: 'colFormItem',
       defaultValue: null,
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/time-picker'
+      regList: []
     },
     style: { width: '100%' },
     disabled: false,
@@ -396,9 +370,7 @@ export const selectComponents = [
       span: 24,
       layout: 'colFormItem',
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/date-picker'
+      regList: []
     },
     placeholder: '请选择',
     type: 'date',
@@ -420,9 +392,7 @@ export const selectComponents = [
       labelWidth: null,
       required: true,
       layout: 'colFormItem',
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/date-picker'
+      regList: []
     },
     style: { width: '100%' },
     type: 'daterange',
@@ -446,9 +416,7 @@ export const selectComponents = [
       labelWidth: null,
       layout: 'colFormItem',
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/rate'
+      regList: []
     },
     style: {},
     max: 5,
@@ -468,9 +436,7 @@ export const selectComponents = [
       labelWidth: null,
       layout: 'colFormItem',
       required: true,
-      regList: [],
-      changeTag: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/color-picker'
+      regList: []
     },
     'show-alpha': false,
     'color-format': '',
@@ -491,10 +457,8 @@ export const selectComponents = [
       showTip: false,
       buttonText: '点击上传',
       regList: [],
-      changeTag: true,
       fileSize: 2,
-      sizeUnit: 'MB',
-      document: 'https://element.eleme.cn/#/zh-CN/component/upload'
+      sizeUnit: 'MB'
     },
     __slot__: {
       'list-type': true
@@ -516,8 +480,7 @@ export const layoutComponents = [
       layout: 'rowFormItem',
       tagIcon: 'row',
       label: '行容器',
-      layoutTree: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/layout#row-attributes'
+      layoutTree: true
     },
     type: 'default',
     justify: 'start',
@@ -527,13 +490,11 @@ export const layoutComponents = [
     __config__: {
       label: '按钮',
       showLabel: true,
-      changeTag: true,
       labelWidth: null,
       tag: 'el-button',
       tagIcon: 'button',
       span: 24,
-      layout: 'colFormItem',
-      document: 'https://element.eleme.cn/#/zh-CN/component/button'
+      layout: 'colFormItem'
     },
     __slot__: {
       default: '主要按钮'
@@ -551,13 +512,11 @@ export const layoutComponents = [
       layout: 'colFormItem',
       tagIcon: 'table',
       tag: 'el-table',
-      document: 'https://element.eleme.cn/#/zh-CN/component/table',
       span: 24,
       formId: 101,
       renderKey: 1595761764203,
       componentName: 'row101',
       showLabel: true,
-      changeTag: true,
       labelWidth: null,
       label: '表格[开发中]',
       dataType: 'dynamic',
@@ -635,8 +594,7 @@ export const systemComponents = [
       layout: 'rowFormItem',
       tagIcon: 'row',
       label: '行容器',
-      layoutTree: true,
-      document: 'https://element.eleme.cn/#/zh-CN/component/layout#row-attributes'
+      layoutTree: true
     },
     type: 'default',
     justify: 'start',
@@ -646,13 +604,11 @@ export const systemComponents = [
     __config__: {
       label: '按钮',
       showLabel: true,
-      changeTag: true,
       labelWidth: null,
       tag: 'el-button',
       tagIcon: 'button',
       span: 24,
-      layout: 'colFormItem',
-      document: 'https://element.eleme.cn/#/zh-CN/component/button'
+      layout: 'colFormItem'
     },
     __slot__: {
       default: '主要按钮'
@@ -670,13 +626,11 @@ export const systemComponents = [
       layout: 'colFormItem',
       tagIcon: 'table',
       tag: 'el-table',
-      document: 'https://element.eleme.cn/#/zh-CN/component/table',
       span: 24,
       formId: 101,
       renderKey: 1595761764203,
       componentName: 'row101',
       showLabel: true,
-      changeTag: true,
       labelWidth: null,
       label: '表格[开发中]',
       dataType: 'dynamic',

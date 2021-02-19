@@ -115,11 +115,12 @@ function mixinMethod(type) {
       dialog: {
         onOpen: 'onOpen() {},',
         onClose: `onClose() {
-        this.$refs['${confGlobal.formRef}'].resetFields()
-      },`,
+          this.$refs['${confGlobal.formRef}'].resetFields()
+        },`,
         close: `close() {
-        this.$emit('update:visible', false)
-      },`,
+          this.$emit('update:visible', false)
+          this.$refs['${confGlobal.formRef}'].resetFields()
+        },`,
         handelConfirm: `handelConfirm() {
         this.$refs['${confGlobal.formRef}'].validate(valid => {
           if(!valid) return
@@ -240,7 +241,8 @@ function buildOptionMethod(methodName, model, methodList, scheme) {
 
 // js整体拼接
 function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, created) {
-  const str = `${exportDefault}{
+  const str = `
+  ${exportDefault}{
   ${inheritAttrs[type]}
   components: {},
   props: [],

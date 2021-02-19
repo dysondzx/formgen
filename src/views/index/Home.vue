@@ -47,9 +47,9 @@
         <el-button icon="el-icon-view" type="text" @click="showJson">
           查看json
         </el-button>
-        <el-button icon="el-icon-download" type="text" @click="download">
+        <!-- <el-button icon="el-icon-download" type="text" @click="download">
           导出vue文件
-        </el-button>
+        </el-button> -->
         <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
           复制代码
         </el-button>
@@ -98,7 +98,7 @@
       :visible.sync="drawerVisible"
       :form-data="formData"
       size="100%"
-      :generate-conf="generateConf"
+      ref="formDrawerRef"
     />
     <json-drawer
       size="60%"
@@ -363,6 +363,7 @@ export default {
     execRun(data) {
       this.AssembleFormData()
       this.drawerVisible = true
+      this.$refs.formDrawerRef.onOpen(this.formData)
     },
     execDownload(data) {
       const codeStr = this.generateCode()
@@ -413,9 +414,11 @@ export default {
       this.operationType = 'download'
     },
     run() {
-      this.dialogVisible = true
-      this.showFileName = false
+      // this.dialogVisible = true
+      // this.showFileName = false
       this.operationType = 'run'
+      this.generateConf = { type: 'file' }
+      this.execRun()
     },
     copy() {
       this.dialogVisible = true

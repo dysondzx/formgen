@@ -367,7 +367,7 @@ function buildElCheckboxGroupChild(scheme) {
 function buildElUploadChild(scheme) {
   const list = []
   const config = scheme.__config__
-  if(scheme.__slot__ && scheme.__slot__['list-type'] !== undefined) {
+  if (scheme.__slot__ && scheme.__slot__['list-type'] !== undefined) {
     if (scheme['list-type'] === 'picture-card') list.push('<i class="el-icon-plus"></i>')
     else list.push(`<el-button size="small" type="primary" icon="el-icon-upload">${config.buttonText}</el-button>`)
   }

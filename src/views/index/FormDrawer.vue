@@ -1,15 +1,9 @@
 <template>
-  <div>
-    <el-drawer v-bind="$attrs" v-on="$listeners" @close="onClose">
+  <div class="form-drawer-container">
+    <el-dialog v-bind="$attrs" title="预览" v-on="$listeners" width="50%" @close="onClose" class="drawer-dialog">
       <div style="height:100%">
         <el-row style="height:100%;overflow:auto">
           <el-col class="right-preview">
-            <div class="close-div">
-              <span class="bar-btn close-btn" @click="$emit('update:visible', false)">
-                <i class="el-icon-circle-close" />
-                关闭
-              </span>
-            </div>
             <iframe
               v-show="isIframeLoaded"
               ref="previewPage"
@@ -22,7 +16,7 @@
           </el-col>
         </el-row>
       </div>
-    </el-drawer>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -224,57 +218,57 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-@import '@/styles/mixin.scss';
-.tab-editor {
-  position: absolute;
-  top: 33px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  font-size: 14px;
-}
-.left-editor {
-  position: relative;
-  height: 100%;
-  background: #1e1e1e;
-  overflow: hidden;
-}
-.setting{
-  position: absolute;
-  right: 15px;
-  top: 3px;
-  color: #a9f122;
-  font-size: 18px;
-  cursor: pointer;
-  z-index: 1;
-}
-.right-preview {
-  height: 100%;
-  .result-wrapper {
-    background: #f2fafb;
-    height: 100vh;
-    width: 100%;
-    overflow: auto;
-    box-sizing: border-box;
+<style lang="scss">
+.form-drawer-container {
+  .drawer-dialog .el-dialog .el-dialog__body {
+    padding: 0px;
   }
-  .close-div {
-    position: fixed;
-    top: 0;
-    right: 50px;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-    text-align: center;
-    height: 40px;
-    line-height: 40px;
-    font-size: 20px;
-    .close-btn {
-      color: #f56c6c;
+  .tab-editor {
+    position: absolute;
+    top: 33px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 14px;
+  }
+  .left-editor {
+    position: relative;
+    height: 100%;
+    background: #1e1e1e;
+    overflow: hidden;
+  }
+  .setting{
+    position: absolute;
+    right: 15px;
+    top: 3px;
+    color: #a9f122;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  .right-preview {
+    height: 100%;
+    .result-wrapper {
+      height: 100vh;
+      width: 100%;
+      overflow: auto;
+      box-sizing: border-box;
+    }
+    .close-div {
+      position: fixed;
+      top: 0;
+      right: 50px;
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+      text-align: center;
+      height: 40px;
+      line-height: 40px;
+      font-size: 20px;
+      .close-btn {
+        color: #f56c6c;
+      }
     }
   }
 }
-@include action-bar;
-::v-deep .el-drawer__header {
-  display: none;
-}
+
 </style>

@@ -29,19 +29,11 @@ export const inputComponents = [
       // 正则校验规则
       regList: []
     },
-    // 组件的插槽属性
-    __slot__: {
-      prepend: '',
-      append: ''
-    },
     // 其余的为可直接写在组件标签上的属性
     placeholder: '请输入',
     style: { width: '100%' },
     clearable: true,
-    'prefix-icon': '',
-    'suffix-icon': '',
     maxlength: null,
-    'show-word-limit': false,
     readonly: false,
     disabled: false
   },
@@ -83,18 +75,11 @@ export const inputComponents = [
       required: true,
       regList: []
     },
-    __slot__: {
-      prepend: '',
-      append: ''
-    },
     placeholder: '请输入',
     'show-password': true,
     style: { width: '100%' },
     clearable: true,
-    'prefix-icon': '',
-    'suffix-icon': '',
     maxlength: null,
-    'show-word-limit': false,
     readonly: false,
     disabled: false
   },
@@ -463,7 +448,7 @@ export const selectComponents = [
     __slot__: {
       'list-type': true
     },
-    action: 'https://jsonplaceholder.typicode.com/posts/',
+    action: '/posts/',
     disabled: false,
     accept: '',
     name: 'file',
@@ -479,111 +464,60 @@ export const layoutComponents = [
     __config__: {
       layout: 'rowFormItem',
       tagIcon: 'row',
-      label: '行容器',
+      label: '一行两列',
       layoutTree: true
     },
-    type: 'default',
-    justify: 'start',
     align: 'top'
   },
   {
     __config__: {
-      label: '按钮',
-      showLabel: true,
-      labelWidth: null,
-      tag: 'el-button',
-      tagIcon: 'button',
-      span: 24,
-      layout: 'colFormItem'
+      label: '说明文字',
+      showLabel: false,
+      eleType: 'remark-text',
+      tag: 'el-input',
+      tagIcon: 'input',
+      defaultValue: undefined,
+      required: true,
+      layout: 'colFormItem',
+      span: 24
     },
-    __slot__: {
-      default: '主要按钮'
-    },
-    type: 'primary',
-    icon: 'el-icon-search',
-    round: false,
-    size: 'medium',
-    plain: false,
-    circle: false,
+    value: null,
+    placeholder: '请输入说明文字',
+    style: { width: '100%' },
+    clearable: false,
+    maxlength: 50,
+    readonly: true,
     disabled: false
   },
   {
     __config__: {
+      label: '描述文件',
+      showLabel: false,
+      // eleType: 'remark-upload',
+      tag: 'remark-upload',
+      tagIcon: 'upload',
       layout: 'colFormItem',
-      tagIcon: 'table',
-      tag: 'el-table',
-      span: 24,
-      formId: 101,
-      renderKey: 1595761764203,
-      componentName: 'row101',
-      showLabel: true,
+      defaultValue: null,
       labelWidth: null,
-      label: '表格[开发中]',
-      dataType: 'dynamic',
-      method: 'get',
-      dataPath: 'list',
-      dataConsumer: 'data',
-      url: 'https://www.fastmock.site/mock/f8d7a54fb1e60561e2f720d5a810009d/fg/tableData',
-      children: [{
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 15957617660153
-        },
-        prop: 'date',
-        label: '日期'
-      }, {
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 15957617660152
-        },
-        prop: 'address',
-        label: '地址'
-      }, {
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 15957617660151
-        },
-        prop: 'name',
-        label: '名称'
-      }, {
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 1595774496335,
-          children: [
-            {
-              __config__: {
-                label: '按钮',
-                tag: 'el-button',
-                tagIcon: 'button',
-                layout: 'raw',
-                renderKey: 1595779809901
-              },
-              __slot__: {
-                default: '主要按钮'
-              },
-              type: 'primary',
-              icon: 'el-icon-search',
-              round: false,
-              size: 'medium'
-            }
-          ]
-        },
-        label: '操作'
-      }]
+      required: true,
+      span: 24,
+      showTip: false,
+      buttonText: '点击附件上传',
+      regList: [],
+      fileSize: 2,
+      sizeUnit: 'MB'
     },
-    data: [],
-    directives: [{
-      name: 'loading',
-      value: true
-    }],
-    border: true,
-    type: 'default',
-    justify: 'start',
-    align: 'top'
+    __slot__: {
+      'list-type': true,
+      fileList: []
+    },
+    action: '/posts/',
+    disabled: false,
+    accept: '',
+    name: 'file',
+    'auto-upload': true,
+    'list-type': 'text',
+    multiple: true
   }
 ]
 
@@ -620,83 +554,5 @@ export const systemComponents = [
     plain: false,
     circle: false,
     disabled: false
-  },
-  {
-    __config__: {
-      layout: 'colFormItem',
-      tagIcon: 'table',
-      tag: 'el-table',
-      span: 24,
-      formId: 101,
-      renderKey: 1595761764203,
-      componentName: 'row101',
-      showLabel: true,
-      labelWidth: null,
-      label: '表格[开发中]',
-      dataType: 'dynamic',
-      method: 'get',
-      dataPath: 'list',
-      dataConsumer: 'data',
-      url: 'https://www.fastmock.site/mock/f8d7a54fb1e60561e2f720d5a810009d/fg/tableData',
-      children: [{
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 15957617660153
-        },
-        prop: 'date',
-        label: '日期'
-      }, {
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 15957617660152
-        },
-        prop: 'address',
-        label: '地址'
-      }, {
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 15957617660151
-        },
-        prop: 'name',
-        label: '名称'
-      }, {
-        __config__: {
-          layout: 'raw',
-          tag: 'el-table-column',
-          renderKey: 1595774496335,
-          children: [
-            {
-              __config__: {
-                label: '按钮',
-                tag: 'el-button',
-                tagIcon: 'button',
-                layout: 'raw',
-                renderKey: 1595779809901
-              },
-              __slot__: {
-                default: '主要按钮'
-              },
-              type: 'primary',
-              icon: 'el-icon-search',
-              round: false,
-              size: 'medium'
-            }
-          ]
-        },
-        label: '操作'
-      }]
-    },
-    data: [],
-    directives: [{
-      name: 'loading',
-      value: true
-    }],
-    border: true,
-    type: 'default',
-    justify: 'start',
-    align: 'top'
   }
 ]

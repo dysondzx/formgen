@@ -49,12 +49,15 @@ const layouts = {
     const className = this.activeId === config.formId
       ? 'drawing-row-item active-from-item'
       : 'drawing-row-item'
-    let child = renderChildren.apply(this, arguments)
-    if (currentItem.type === 'flex') {
-      child = <el-row type={currentItem.type} justify={currentItem.justify} align={currentItem.align}>
-              {child}
-            </el-row>
+    if (Array.isArray(currentItem.__config__.children)) {
+      currentItem.__config__.children.forEach(el => {
+        el.__config__.span = 12
+      })
     }
+    let child = renderChildren.apply(this, arguments)
+    child = <el-row>
+            {child}
+          </el-row>
     return (
       <el-col span={config.span}>
         <el-row gutter={config.gutter} class={className}

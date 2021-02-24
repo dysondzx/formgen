@@ -7,18 +7,18 @@
     <div class="field-box">
       <el-scrollbar class="right-scrollbar">
         <!-- 组件属性 -->
-        <el-form v-show="currentTab==='field' && showField" size="small" label-width="90px">
+        <el-form v-show="currentTab==='field' && showField" v-if="activeData" size="small" label-width="90px">
           <el-form-item v-if="activeData.__vModel__!==undefined" label="字段名">
             <el-input v-model="activeData.__vModel__" placeholder="请输入字段名（v-model）" />
           </el-form-item>
           <el-form-item v-if="activeData.__config__.componentName!==undefined" label="组件名">
             {{ activeData.__config__.componentName }}
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.label!==undefined" label="标题">
+          <el-form-item v-if="activeData.__config__.label!==undefined && !activeData.__config__.eleType" label="标题">
             <el-input v-model="activeData.__config__.label" placeholder="请输入标题" @input="changeRenderKey" />
           </el-form-item>
-          <el-form-item v-if="activeData.placeholder!==undefined" label="占位提示">
-            <el-input v-model="activeData.placeholder" placeholder="请输入占位提示" @input="changeRenderKey" />
+          <el-form-item v-if="activeData.placeholder!==undefined && !activeData.__config__.eleType" label="提示文字">
+            <el-input v-model="activeData.placeholder" placeholder="请输入" @input="changeRenderKey" />
           </el-form-item>
           <el-form-item v-if="activeData['start-placeholder']!==undefined" label="开始占位">
             <el-input v-model="activeData['start-placeholder']" placeholder="请输入占位提示" />
@@ -26,42 +26,19 @@
           <el-form-item v-if="activeData['end-placeholder']!==undefined" label="结束占位">
             <el-input v-model="activeData['end-placeholder']" placeholder="请输入占位提示" />
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.span!==undefined" label="表单栅格">
-            <el-slider v-model="activeData.__config__.span" :max="24" :min="1" :marks="{12:''}" @change="spanChange" />
-          </el-form-item>
+          <!-- <el-form-item v-if="activeData.__config__.span!==undefined" label="组件宽度">
+            <el-slider v-model="activeData.__config__.span" :max="24" :min="12" :marks="{12:''}" @change="spanChange" />
+          </el-form-item> -->
           <el-form-item v-if="activeData.__config__.layout==='rowFormItem'&&activeData.gutter!==undefined" label="栅格间隔">
             <el-input-number v-model="activeData.gutter" :min="0" placeholder="栅格间隔" />
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.layout==='rowFormItem'&&activeData.type!==undefined" label="布局模式">
-            <el-radio-group v-model="activeData.type">
-              <el-radio-button label="default" />
-              <el-radio-button label="flex" />
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item v-if="activeData.justify!==undefined&&activeData.type==='flex'" label="水平排列">
-            <el-select v-model="activeData.justify" placeholder="请选择水平排列" :style="{width: '100%'}">
-              <el-option
-                v-for="(item, index) in justifyOptions"
-                :key="index"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item v-if="activeData.align!==undefined&&activeData.type==='flex'" label="垂直排列">
-            <el-radio-group v-model="activeData.align">
-              <el-radio-button label="top" />
-              <el-radio-button label="middle" />
-              <el-radio-button label="bottom" />
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item v-if="activeData.__config__.labelWidth!==undefined" label="标签宽度">
+          <!-- <el-form-item v-if="activeData.__config__.labelWidth!==undefined" label="标签宽度">
             <el-input v-model.number="activeData.__config__.labelWidth" type="number" placeholder="请输入标签宽度" />
-          </el-form-item>
-          <el-form-item v-if="activeData.style&&activeData.style.width!==undefined" label="组件宽度">
+          </el-form-item> -->
+          <!-- <el-form-item v-if="activeData.style&&activeData.style.width!==undefined" label="组件宽度">
             <el-input v-model="activeData.style.width" placeholder="请输入组件宽度" clearable />
-          </el-form-item>
-          <el-form-item v-if="activeData.__vModel__!==undefined" label="默认值">
+          </el-form-item> -->
+          <el-form-item v-if="activeData.__vModel__!==undefined && !activeData.__config__.eleType" label="默认值">
             <el-input
               :value="setDefaultValue(activeData.__config__.defaultValue)"
               placeholder="请输入默认值"
@@ -83,26 +60,6 @@
               placeholder="最多可选"
               @input="$set(activeData, 'max', $event?$event:undefined)"
             />
-          </el-form-item>
-          <el-form-item v-if="activeData.__slot__&&activeData.__slot__.prepend!==undefined" label="前缀">
-            <el-input v-model="activeData.__slot__.prepend" placeholder="请输入前缀" />
-          </el-form-item>
-          <el-form-item v-if="activeData.__slot__&&activeData.__slot__.append!==undefined" label="后缀">
-            <el-input v-model="activeData.__slot__.append" placeholder="请输入后缀" />
-          </el-form-item>
-          <el-form-item v-if="activeData['prefix-icon']!==undefined" label="前图标">
-            <el-input v-model="activeData['prefix-icon']" placeholder="请输入前图标名称">
-              <el-button slot="append" icon="el-icon-thumb" @click="openIconsDialog('prefix-icon')">
-                选择
-              </el-button>
-            </el-input>
-          </el-form-item>
-          <el-form-item v-if="activeData['suffix-icon'] !== undefined" label="后图标">
-            <el-input v-model="activeData['suffix-icon']" placeholder="请输入后图标名称">
-              <el-button slot="append" icon="el-icon-thumb" @click="openIconsDialog('suffix-icon')">
-                选择
-              </el-button>
-            </el-input>
           </el-form-item>
           <el-form-item
             v-if="activeData['icon']!==undefined && activeData.__config__.tag === 'el-button'"
@@ -148,7 +105,7 @@
               </el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <el-form-item v-if="activeData.maxlength !== undefined" label="最多输入">
+          <el-form-item v-if="activeData.maxlength !== undefined && !activeData.__config__.eleType" label="最多输入">
             <el-input v-model="activeData.maxlength" placeholder="请输入字符长度">
               <template slot="append">
                 个字符
@@ -494,7 +451,7 @@
           <el-form-item v-if="activeData.__config__.tag === 'el-cascader'" label="可否筛选">
             <el-switch v-model="activeData.filterable" />
           </el-form-item>
-          <el-form-item v-if="activeData.clearable !== undefined" label="能否清空">
+          <el-form-item v-if="activeData.clearable !== undefined && !activeData.__config__.eleType" label="能否清空">
             <el-switch v-model="activeData.clearable" />
           </el-form-item>
           <el-form-item v-if="activeData.__config__.showTip !== undefined" label="显示提示">
@@ -506,10 +463,10 @@
           <el-form-item v-if="activeData['auto-upload'] !== undefined" label="自动上传">
             <el-switch v-model="activeData['auto-upload']" />
           </el-form-item>
-          <el-form-item v-if="activeData.readonly !== undefined" label="是否只读">
+          <el-form-item v-if="activeData.readonly !== undefined && !activeData.__config__.eleType" label="是否只读">
             <el-switch v-model="activeData.readonly" />
           </el-form-item>
-          <el-form-item v-if="activeData.disabled !== undefined" label="是否禁用">
+          <el-form-item v-if="activeData.disabled !== undefined && !activeData.__config__.eleType" label="是否禁用">
             <el-switch v-model="activeData.disabled" />
           </el-form-item>
           <el-form-item v-if="activeData.__config__.tag === 'el-select'" label="能否搜索">
@@ -518,8 +475,35 @@
           <el-form-item v-if="activeData.__config__.tag === 'el-select'" label="是否多选">
             <el-switch v-model="activeData.multiple" @change="multipleChange" />
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.required !== undefined" label="是否必填">
+          <el-form-item v-if="activeData.__config__.required !== undefined && !activeData.__config__.eleType" label="是否必填">
             <el-switch v-model="activeData.__config__.required" />
+          </el-form-item>
+          <el-form-item v-if="activeData.__config__.eleType && activeData.__config__.eleType === 'remark-text'" class="remark-item" label="说明文字">
+            <span class="remark-tip">最多{{ activeData.maxlength?activeData.maxlength:50 }}字</span>
+            <el-input v-model="activeData.value" type="textarea" :max-length="activeData.maxlength" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入说明文字" />
+          </el-form-item>
+          <el-form-item v-if="activeData.__config__.tag === 'remark-upload'" class="remark-item" label="描述文件">
+            <el-upload
+              class="upload-demo"
+              :action="activeData.action"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :before-remove="beforeRemove"
+              :on-success="handleSuccess"
+              :on-error="hanldeError"
+              :before-upload="handleBeforeUpload"
+              multiple
+              :limit="3"
+              :on-exceed="handleExceed"
+              :file-list="activeData.__slot__.fileList"
+              >
+              <el-button size="small" type="primary">
+                点击上传
+              </el-button>
+              <div slot="tip" class="el-upload__tip">
+                只能上传jpg/png文件，且不超过500kb
+              </div>
+            </el-upload>
           </el-form-item>
 
           <template v-if="activeData.__config__.layoutTree">
@@ -621,7 +605,7 @@
     </div>
 
     <treeNode-dialog :visible.sync="dialogVisible" title="添加选项" @commit="addNode" />
-    <icons-dialog :visible.sync="iconsVisible" :current="activeData[currentIconModel]" @select="setIcon" />
+    <icons-dialog v-if="activeData" :visible.sync="iconsVisible" :current="activeData[currentIconModel]" @select="setIcon" />
   </div>
 </template>
 
@@ -922,12 +906,32 @@ export default {
       if (needRerenderList.includes(this.activeData.__config__.tag)) {
         this.activeData.__config__.renderKey = +new Date()
       }
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    handleSuccess(response, file, fileList) {
+      this.activeData.__slot__.fileList.push({ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' })
+    },
+    hanldeError(err, file, fileList) {
+      this.activeData.__slot__.fileList.push({ name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' })
+    },
+    handleBeforeUpload(file) {
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .right-board {
   width: 350px;
   position: absolute;
@@ -943,7 +947,21 @@ export default {
   .el-scrollbar {
     height: 100%;
   }
+  .el-form-item.remark-item {
+    .el-form-item__content {
+      margin-left: 24px !important;
+    }
+    .remark-tip {
+      color: #DCDFE6;
+      .el-form-item__content {
+        margin-left: 24px;
+      }
+    }
+  }
 }
+</style>
+
+<style lang="scss" scoped>
 .select-item {
   display: flex;
   border: 1px dashed #fff;

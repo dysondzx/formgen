@@ -8,10 +8,6 @@ const units = {
   GB: '1024 / 1024 / 1024'
 }
 let confGlobal
-const inheritAttrs = {
-  file: '',
-  dialog: 'inheritAttrs: false,'
-}
 
 /**
  * 组装js 【入口函数】
@@ -26,10 +22,11 @@ export function makeUpJs(formConfig, type) {
   const propsList = []
   const methodList = mixinMethod(type)
   const uploadVarList = []
+  const fileList = []
   const created = []
 
   formConfig.fields.forEach(el => {
-    buildAttributes(el, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, created)
+    buildAttributes(el, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, created)
   })
 
   const script = buildexport(
@@ -41,6 +38,7 @@ export function makeUpJs(formConfig, type) {
     uploadVarList.join('\n'),
     propsList.join('\n'),
     methodList.join('\n'),
+    fileList.join('\n'),
     created.join('\n')
   )
   confGlobal = null
@@ -48,7 +46,7 @@ export function makeUpJs(formConfig, type) {
 }
 
 // 构建组件属性
-function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, created) {
+function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, created) {
   const config = scheme.__config__
   const slot = scheme.__slot__
   buildData(scheme, dataList)
@@ -64,6 +62,11 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
       buildOptionMethod(methodName, model, methodList, scheme)
       callInCreated(methodName, created)
     }
+  }
+
+  if (slot && slot.fileList && slot.fileList.length) {
+    buildFileList(scheme, fileList)
+    buildDownloadFileMethod(methodList, scheme)
   }
 
   // 处理props
@@ -98,39 +101,19 @@ function callInCreated(methodName, created) {
 }
 
 // 混入处理函数
-function mixinMethod(type) {
-  const list = []; const
-    minxins = {
-      file: confGlobal.formBtns ? {
-        submitForm: `submitForm() {
-        this.$refs['${confGlobal.formRef}'].validate(valid => {
-          if(!valid) return
-          // TODO 提交表单
-        })
-      },`,
-        resetForm: `resetForm() {
-        this.$refs['${confGlobal.formRef}'].resetFields()
-      },`
-      } : null,
-      dialog: {
-        onOpen: 'onOpen() {},',
-        onClose: `onClose() {
-          this.$refs['${confGlobal.formRef}'].resetFields()
-        },`,
-        close: `close() {
-          this.$emit('update:visible', false)
-          this.$refs['${confGlobal.formRef}'].resetFields()
-        },`,
-        handelConfirm: `handelConfirm() {
-        this.$refs['${confGlobal.formRef}'].validate(valid => {
-          if(!valid) return
-          this.close()
-        })
-      },`
-      }
-    }
-
-  const methods = minxins[type]
+function mixinMethod() {
+  const list = []
+  const methods = confGlobal.formBtns ? {
+    submitForm: `submitForm() {
+      this.$refs['${confGlobal.formRef}'].validate(valid => {
+        if(!valid) return
+        // TODO 提交表单
+      })
+    },`,
+    resetForm: `resetForm() {
+      this.$refs['${confGlobal.formRef}'].resetFields()
+    },`
+  } : null
   if (methods) {
     Object.keys(methods).forEach(key => {
       list.push(methods[key])
@@ -182,6 +165,14 @@ function buildOptions(scheme, optionsList) {
   if (scheme.__config__.dataType === 'dynamic') { options = [] }
   const str = `${scheme.__vModel__}Options: ${JSON.stringify(options)},`
   optionsList.push(str)
+}
+// 构建fileList
+function buildFileList(scheme, files) {
+  if (scheme.__vModel__ === undefined) return
+  // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
+  const { fileList } = scheme.__slot__
+  const str = `${scheme.__vModel__}FileList: ${JSON.stringify(fileList)},`
+  files.push(str)
 }
 
 function buildProps(scheme, propsList) {
@@ -239,11 +230,19 @@ function buildOptionMethod(methodName, model, methodList, scheme) {
   methodList.push(str)
 }
 
+function buildDownloadFileMethod(methodList, scheme) {
+  const config = scheme.__config__
+  const str = `downloadFile(url) {
+    console.log('new-url:', url)
+  },`
+  methodList.push(str)
+}
+
 // js整体拼接
-function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, created) {
+function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, fileList, created) {
   const str = `
   ${exportDefault}{
-  ${inheritAttrs[type]}
+  inheritAttrs: false,
   components: {},
   props: [],
   data () {
@@ -257,6 +256,7 @@ function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, m
       ${uploadVar}
       ${selectOptions}
       ${props}
+      ${fileList}
     }
   },
   computed: {},

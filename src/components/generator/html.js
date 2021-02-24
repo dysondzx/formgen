@@ -4,16 +4,6 @@ import ruleTrigger from './ruleTrigger'
 let confGlobal
 let someSpanIsNot24
 
-export function dialogWrapper(str) {
-  return `<el-dialog v-bind="$attrs" v-on="$listeners" @open="onOpen" @close="onClose" title="Dialog Titile">
-    ${str}
-    <div slot="footer">
-      <el-button @click="close">取消</el-button>
-      <el-button type="primary" @click="handelConfirm">确定</el-button>
-    </div>
-  </el-dialog>`
-}
-
 export function vueTemplate(str) {
   return `<template>
     <div>
@@ -54,11 +44,11 @@ function buildFormTemplate(scheme, child, type) {
 
 function buildFromBtns(scheme, type) {
   let str = ''
-  if (scheme.formBtns && type === 'file') {
+  if (scheme.formBtns) {
     str = `<el-form-item size="large">
-          <el-button type="primary" @click="submitForm">提交</el-button>
-          <el-button @click="resetForm">重置</el-button>
-        </el-form-item>`
+            <el-button type="primary" @click="submitForm">提交</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>`
     if (someSpanIsNot24) {
       str = `<el-col :span="24">
           ${str}
@@ -100,12 +90,12 @@ const layouts = {
   },
   rowFormItem(scheme) {
     const config = scheme.__config__
-    const type = scheme.type === 'default' ? '' : `type="${scheme.type}"`
-    const justify = scheme.type === 'default' ? '' : `justify="${scheme.justify}"`
-    const align = scheme.type === 'default' ? '' : `align="${scheme.align}"`
     const gutter = scheme.gutter ? `:gutter="${scheme.gutter}"` : ''
-    const children = config.children.map(el => layouts[el.__config__.layout](el))
-    let str = `<el-row ${type} ${justify} ${align} ${gutter}>
+    const children = config.children.map(el => {
+      el.__config__.span = 12
+      return layouts[el.__config__.layout](el)
+    })
+    let str = `<el-row ${gutter}>
       ${children.join('\n')}
     </el-row>`
     str = colWrapper(scheme, str)
@@ -290,6 +280,14 @@ const tags = {
     const height = el.height ? `:height="${el.height}"` : ''
     const branding = el.branding ? `:branding="${el.branding}"` : ''
     return `<${tag} ${vModel} ${placeholder} ${height} ${branding}></${tag}>`
+  },
+  'remark-upload': el => {
+    const {
+      tag, vModel, placeholder
+    } = attrBuilder(el)
+    let child = buildFileListChild(el)
+    if (child) child = `\n${child}\n` // 换行
+    return `<${tag} ${vModel} ${placeholder}>${child}</${tag}>`
   }
 }
 
@@ -333,6 +331,19 @@ function buildElSelectChild(scheme) {
   const slot = scheme.__slot__
   if (slot && slot.options && slot.options.length) {
     children.push(`<el-option v-for="(item, index) in ${scheme.__vModel__}Options" :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>`)
+  }
+  return children.join('\n')
+}
+
+function buildFileListChild(scheme) {
+  const children = []
+  const slot = scheme.__slot__
+  if (slot && slot.fileList && slot.fileList.length) {
+    children.push(`
+    <div v-for="(item, idx) in ${scheme.__vModel__}FileList" :key="idx" class="file-list-container">
+      <span>{{(idx+1)+'.'}}&nbsp;<a href="javascript:;" @click="downloadFile(item.url)">{{item.name}}</a></span>
+    </div>
+    `)
   }
   return children.join('\n')
 }
@@ -391,11 +402,7 @@ export function makeUpHtml(formConfig, type) {
   })
   const htmlStr = htmlList.join('\n')
   // 将组件代码放进form标签
-  let temp = buildFormTemplate(formConfig, htmlStr, type)
-  // dialog标签包裹代码
-  if (type === 'dialog') {
-    temp = dialogWrapper(temp)
-  }
+  const temp = buildFormTemplate(formConfig, htmlStr, type)
   confGlobal = null
   return temp
 }

@@ -3,7 +3,7 @@
     <div class="left-board">
       <div class="logo-wrapper">
         <div class="logo">
-          <i class="el-icon-back"></i> 组团计划申请 <i class="el-icon-setting"></i>
+          <i class="el-icon-back"/> 组团计划申请 <i class="el-icon-setting"/>
         </div>
       </div>
       <el-scrollbar class="left-scrollbar">
@@ -96,9 +96,10 @@
 
     <form-drawer
       :visible.sync="drawerVisible"
+      :generate-conf="generateConf"
       :form-data="formData"
-      size="100%"
       ref="formDrawerRef"
+      size="100%"
     />
     <json-drawer
       size="60%"
@@ -109,7 +110,6 @@
     <code-type-dialog
       :visible.sync="dialogVisible"
       title="选择生成类型"
-      :show-file-name="showFileName"
       @confirm="generate"
     />
     <input id="copyNode" type="hidden">
@@ -136,22 +136,15 @@ import {
 } from '@/components/generator/html'
 import { makeUpJs } from '@/components/generator/js'
 import { makeUpCss } from '@/components/generator/css'
-import drawingDefalut from '@/components/generator/drawingDefalut'
 import logo from '@/assets/logo.png'
 import CodeTypeDialog from './CodeTypeDialog'
 import DraggableItem from './DraggableItem'
-import {
-  getDrawingList, saveDrawingList, getIdGlobal, saveIdGlobal, getFormConf
-} from '@/utils/db'
 import loadBeautifier from '@/utils/loadBeautifier'
 
 let beautifier
 const emptyActiveData = { style: {}, autosize: {} }
 let oldActiveId
 let tempActiveData
-const drawingListInDB = getDrawingList()
-const formConfInDB = getFormConf()
-const idGlobal = getIdGlobal()
 
 export default {
   components: {
@@ -166,25 +159,22 @@ export default {
   data() {
     return {
       logo,
-      idGlobal,
+      idGlobal: 100,
       formConf,
       inputComponents,
       selectComponents,
       layoutComponents,
       systemComponents,
       labelWidth: 100,
-      drawingList: drawingDefalut,
+      drawingList: [],
       drawingData: {},
-      activeId: drawingDefalut[0].formId,
+      activeId: null,
       drawerVisible: false,
       formData: {},
       dialogVisible: false,
       jsonDrawerVisible: false,
       generateConf: null,
-      showFileName: false,
-      activeData: drawingDefalut[0],
-      saveDrawingListDebounce: debounce(340, saveDrawingList),
-      saveIdGlobalDebounce: debounce(340, saveIdGlobal),
+      activeData: null,
       leftComponents: [
         {
           title: '输入型组件',
@@ -208,17 +198,6 @@ export default {
   computed: {
   },
   watch: {
-    // eslint-disable-next-line func-names
-    'activeData.__config__.label': function (val, oldVal) {
-      if (
-        this.activeData.placeholder === undefined
-        || !this.activeData.__config__.tag
-        || oldActiveId !== this.activeId
-      ) {
-        return
-      }
-      this.activeData.placeholder = this.activeData.placeholder.replace(oldVal, '') + val
-    },
     activeId: {
       handler(val) {
         oldActiveId = val
@@ -227,28 +206,13 @@ export default {
     },
     drawingList: {
       handler(val) {
-        this.saveDrawingListDebounce(val)
+        this.saveDrawingList()
         if (val.length === 0) this.idGlobal = 100
       },
       deep: true
-    },
-    idGlobal: {
-      handler(val) {
-        this.saveIdGlobalDebounce(val)
-      },
-      immediate: true
     }
   },
   mounted() {
-    if (Array.isArray(drawingListInDB) && drawingListInDB.length > 0) {
-      this.drawingList = drawingListInDB
-    } else {
-      this.drawingList = drawingDefalut
-    }
-    this.activeFormItem(this.drawingList[0])
-    if (formConfInDB) {
-      this.formConf = formConfInDB
-    }
     loadBeautifier(btf => {
       beautifier = btf
     })
@@ -268,6 +232,9 @@ export default {
     })
   },
   methods: {
+    saveDrawingList() {
+      // 调后台接口保存
+    },
     setObjectValueByStringKeys(obj, strKeys, val) {
       const arr = strKeys.split('.')
       arr.reduce((pre, item, i) => {
@@ -329,7 +296,6 @@ export default {
       const config = clone.__config__
       config.span = this.formConf.span // 生成代码时，会根据span做精简判断
       this.createIdAndKey(clone)
-      clone.placeholder !== undefined && (clone.placeholder += config.label)
       tempActiveData = clone
       return tempActiveData
     },
@@ -363,7 +329,6 @@ export default {
     execRun(data) {
       this.AssembleFormData()
       this.drawerVisible = true
-      this.$refs.formDrawerRef.onOpen(this.formData)
     },
     execDownload(data) {
       const codeStr = this.generateCode()
@@ -410,19 +375,16 @@ export default {
     },
     download() {
       this.dialogVisible = true
-      this.showFileName = true
       this.operationType = 'download'
     },
     run() {
-      // this.dialogVisible = true
-      // this.showFileName = false
+      this.dialogVisible = true
       this.operationType = 'run'
-      this.generateConf = { type: 'file' }
-      this.execRun()
+      // this.generateConf = { type: 'file' }
+      // this.execRun()
     },
     copy() {
       this.dialogVisible = true
-      this.showFileName = false
       this.operationType = 'copy'
     },
     tagChange(newTag) {

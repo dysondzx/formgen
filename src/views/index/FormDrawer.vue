@@ -1,6 +1,6 @@
 <template>
   <div class="form-drawer-container">
-    <el-dialog v-bind="$attrs" title="预览" v-on="$listeners" width="50%" @close="onClose" class="drawer-dialog">
+    <el-dialog v-bind="$attrs" width="50%" title="预览" top="2vh" class="drawer-dialog" v-on="$listeners" @opened="onOpen" @close="onClose">
       <div style="height:100%">
         <el-row style="height:100%;overflow:auto">
           <el-col class="right-preview">
@@ -48,7 +48,7 @@ let monaco
 
 export default {
   components: { ResourceDialog },
-  props: ['formData'],
+  props: ['formData', 'generateConf'],
   data() {
     return {
       activeTab: 'html',
@@ -61,8 +61,7 @@ export default {
       isRefreshCode: false, // 每次打开都需要重新刷新代码
       scripts: [],
       links: [],
-      monaco: null,
-      formDataLocal: this.formData
+      monaco: null
     }
   },
   computed: {
@@ -99,13 +98,11 @@ export default {
         e.preventDefault()
       }
     },
-    onOpen(data) {
-      const type = 'file'
-      this.formDataLocal = data
-      this.htmlCode = makeUpHtml(this.formDataLocal, type)
-      this.jsCode = makeUpJs(this.formDataLocal, type)
-      this.cssCode = makeUpCss(this.formDataLocal)
-
+    onOpen() {
+      const { type } = this.generateConf
+      this.htmlCode = makeUpHtml(this.formData, type)
+      this.jsCode = makeUpJs(this.formData, type)
+      this.cssCode = makeUpCss(this.formData)
       if (!this.isInitcode) {
         this.isRefreshCode = true
         this.isIframeLoaded && (this.isInitcode = true) && this.runCode()
@@ -176,7 +173,7 @@ export default {
           const postData = {
             type: 'refreshFrame',
             data: {
-              generateConf: { type: 'file' },
+              generateConf: this.generateConf,
               html: this.htmlCode,
               js: jsCodeStr.replace(exportDefault, ''),
               css: this.cssCode,
@@ -188,6 +185,11 @@ export default {
             postData,
             location.origin
           )
+          setTimeout(() => {
+            this.$nextTick(() => {
+              this.$refs.previewPage.height = this.$refs.previewPage.contentWindow.document.body.scrollHeight
+            })
+          }, 50)
         } else {
           this.$message.error('请使用export default')
         }
@@ -249,10 +251,11 @@ export default {
   .right-preview {
     height: 100%;
     .result-wrapper {
-      height: 100vh;
+      // height: 80vh;
       width: 100%;
       overflow: auto;
       box-sizing: border-box;
+      padding: 0 20px;
     }
     .close-div {
       position: fixed;

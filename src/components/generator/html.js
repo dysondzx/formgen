@@ -288,6 +288,14 @@ const tags = {
     let child = buildFileListChild(el)
     if (child) child = `\n${child}\n` // 换行
     return `<${tag} ${vModel} ${placeholder}>${child}</${tag}>`
+  },
+  'remark-text': el => {
+    const {
+      tag, vModel, placeholder
+    } = attrBuilder(el)
+    let child = buildRemarkTextChild(el)
+    if (child) child = `\n${child}\n` // 换行
+    return `<${tag} ${vModel} ${placeholder}>${child}</${tag}>`
   }
 }
 
@@ -343,6 +351,16 @@ function buildFileListChild(scheme) {
     <div v-for="(item, idx) in ${scheme.__vModel__}FileList" :key="idx" class="file-list-container">
       <span>{{(idx+1)+'.'}}&nbsp;<a href="javascript:;" @click="downloadFile(item.url)">{{item.name}}</a></span>
     </div>
+    `)
+  }
+  return children.join('\n')
+}
+function buildRemarkTextChild(scheme) {
+  const children = []
+  const slot = scheme.__slot__
+  if (slot && slot.content) {
+    children.push(`
+    <p>{{${scheme.__vModel__}Content}}</p>
     `)
   }
   return children.join('\n')

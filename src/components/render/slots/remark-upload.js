@@ -4,11 +4,10 @@ export default {
     conf.__slot__[key].forEach((item, index) => {
       list.push(
         <div class="file-list-container">
-        <span>{(index+1)+'.'}&nbsp;<a href="javascript:;">{item.name}</a></span>
+        <span>{(index + 1)}.&nbsp;<a>{item.name}</a></span>
         </div>
       )
     })
     return list
   }
 }
-  

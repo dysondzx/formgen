@@ -473,13 +473,14 @@ export const layoutComponents = [
     __config__: {
       label: '说明文字',
       showLabel: false,
-      eleType: 'remark-text',
-      tag: 'el-input',
+      tag: 'remark-text',
       tagIcon: 'input',
-      defaultValue: undefined,
       required: true,
       layout: 'colFormItem',
       span: 24
+    },
+    __slot__: {
+      content: ''
     },
     value: null,
     placeholder: '请输入说明文字',

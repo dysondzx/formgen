@@ -23,10 +23,11 @@ export function makeUpJs(formConfig, type) {
   const methodList = mixinMethod(type)
   const uploadVarList = []
   const fileList = []
+  const contentList = []
   const created = []
 
   formConfig.fields.forEach(el => {
-    buildAttributes(el, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, created)
+    buildAttributes(el, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, contentList, created)
   })
 
   const script = buildexport(
@@ -39,6 +40,7 @@ export function makeUpJs(formConfig, type) {
     propsList.join('\n'),
     methodList.join('\n'),
     fileList.join('\n'),
+    contentList.join('\n'),
     created.join('\n')
   )
   confGlobal = null
@@ -46,7 +48,7 @@ export function makeUpJs(formConfig, type) {
 }
 
 // 构建组件属性
-function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, created) {
+function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, contentList, created) {
   const config = scheme.__config__
   const slot = scheme.__slot__
   buildData(scheme, dataList)
@@ -67,6 +69,10 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
   if (slot && slot.fileList && slot.fileList.length) {
     buildFileList(scheme, fileList)
     buildDownloadFileMethod(methodList, scheme)
+  }
+
+  if (slot && slot.content) {
+    buildTextContent(scheme, contentList)
   }
 
   // 处理props
@@ -90,7 +96,7 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
   // 构建子级组件属性
   if (config.children) {
     config.children.forEach(item => {
-      buildAttributes(item, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, created)
+      buildAttributes(item, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, contentList, created)
     })
   }
 }
@@ -175,6 +181,14 @@ function buildFileList(scheme, files) {
   files.push(str)
 }
 
+function buildTextContent(scheme, contentList) {
+  if (scheme.__vModel__ === undefined) return
+  // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
+  const { content } = scheme.__slot__
+  const str = `${scheme.__vModel__}Content: '${content}',`
+  contentList.push(str)
+}
+
 function buildProps(scheme, propsList) {
   const str = `${scheme.__vModel__}Props: ${JSON.stringify(scheme.props.props)},`
   propsList.push(str)
@@ -239,7 +253,8 @@ function buildDownloadFileMethod(methodList, scheme) {
 }
 
 // js整体拼接
-function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, fileList, created) {
+function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, fileList, contentList, created) {
+  debugger
   const str = `
   ${exportDefault}{
   inheritAttrs: false,
@@ -257,6 +272,7 @@ function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, m
       ${selectOptions}
       ${props}
       ${fileList}
+      ${contentList}
     }
   },
   computed: {},

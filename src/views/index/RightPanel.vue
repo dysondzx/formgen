@@ -14,10 +14,10 @@
           <el-form-item v-if="activeData.__config__.componentName!==undefined" label="组件名">
             {{ activeData.__config__.componentName }}
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.label!==undefined && !activeData.__config__.eleType" label="标题">
+          <el-form-item v-if="activeData.__config__.label!==undefined" label="标题">
             <el-input v-model="activeData.__config__.label" placeholder="请输入标题" @input="changeRenderKey" />
           </el-form-item>
-          <el-form-item v-if="activeData.placeholder!==undefined && !activeData.__config__.eleType" label="提示文字">
+          <el-form-item v-if="activeData.placeholder!==undefined" label="提示文字">
             <el-input v-model="activeData.placeholder" placeholder="请输入" @input="changeRenderKey" />
           </el-form-item>
           <el-form-item v-if="activeData['start-placeholder']!==undefined" label="开始占位">
@@ -38,7 +38,7 @@
           <!-- <el-form-item v-if="activeData.style&&activeData.style.width!==undefined" label="组件宽度">
             <el-input v-model="activeData.style.width" placeholder="请输入组件宽度" clearable />
           </el-form-item> -->
-          <el-form-item v-if="activeData.__vModel__!==undefined && !activeData.__config__.eleType" label="默认值">
+          <el-form-item v-if="activeData.__vModel__!==undefined" label="默认值">
             <el-input
               :value="setDefaultValue(activeData.__config__.defaultValue)"
               placeholder="请输入默认值"
@@ -105,7 +105,7 @@
               </el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <el-form-item v-if="activeData.maxlength !== undefined && !activeData.__config__.eleType" label="最多输入">
+          <el-form-item v-if="activeData.maxlength !== undefined" label="最多输入">
             <el-input v-model="activeData.maxlength" placeholder="请输入字符长度">
               <template slot="append">
                 个字符
@@ -451,7 +451,7 @@
           <el-form-item v-if="activeData.__config__.tag === 'el-cascader'" label="可否筛选">
             <el-switch v-model="activeData.filterable" />
           </el-form-item>
-          <el-form-item v-if="activeData.clearable !== undefined && !activeData.__config__.eleType" label="能否清空">
+          <el-form-item v-if="activeData.clearable !== undefined" label="能否清空">
             <el-switch v-model="activeData.clearable" />
           </el-form-item>
           <el-form-item v-if="activeData.__config__.showTip !== undefined" label="显示提示">
@@ -463,10 +463,10 @@
           <el-form-item v-if="activeData['auto-upload'] !== undefined" label="自动上传">
             <el-switch v-model="activeData['auto-upload']" />
           </el-form-item>
-          <el-form-item v-if="activeData.readonly !== undefined && !activeData.__config__.eleType" label="是否只读">
+          <el-form-item v-if="activeData.readonly !== undefined" label="是否只读">
             <el-switch v-model="activeData.readonly" />
           </el-form-item>
-          <el-form-item v-if="activeData.disabled !== undefined && !activeData.__config__.eleType" label="是否禁用">
+          <el-form-item v-if="activeData.disabled !== undefined" label="是否禁用">
             <el-switch v-model="activeData.disabled" />
           </el-form-item>
           <el-form-item v-if="activeData.__config__.tag === 'el-select'" label="能否搜索">
@@ -475,12 +475,12 @@
           <el-form-item v-if="activeData.__config__.tag === 'el-select'" label="是否多选">
             <el-switch v-model="activeData.multiple" @change="multipleChange" />
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.required !== undefined && !activeData.__config__.eleType" label="是否必填">
+          <el-form-item v-if="activeData.__config__.required !== undefined" label="是否必填">
             <el-switch v-model="activeData.__config__.required" />
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.eleType && activeData.__config__.eleType === 'remark-text'" class="remark-item" label="说明文字">
+          <el-form-item v-if="activeData.__config__.tag === 'remark-text'" class="remark-item" label="说明文字">
             <span class="remark-tip">最多{{ activeData.maxlength?activeData.maxlength:50 }}字</span>
-            <el-input v-model="activeData.value" type="textarea" :max-length="activeData.maxlength" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入说明文字" />
+            <el-input v-model="activeData.__slot__.content" type="textarea" :max-length="activeData.maxlength" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入说明文字" />
           </el-form-item>
           <el-form-item v-if="activeData.__config__.tag === 'remark-upload'" class="remark-item" label="描述文件">
             <el-upload

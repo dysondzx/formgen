@@ -254,7 +254,6 @@ function buildDownloadFileMethod(methodList, scheme) {
 
 // js整体拼接
 function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, fileList, contentList, created) {
-  debugger
   const str = `
   ${exportDefault}{
   inheritAttrs: false,

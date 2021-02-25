@@ -484,7 +484,6 @@ export const layoutComponents = [
     },
     value: null,
     placeholder: '请输入说明文字',
-    style: { width: '100%' },
     clearable: false,
     maxlength: 50,
     readonly: true,

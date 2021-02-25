@@ -30,7 +30,6 @@ function init(event) {
     }
 
     $previewApp.innerHTML = `${links}<style>${code.css}</style><div id="app"></div>`
-
     if (Array.isArray(code.scripts) && code.scripts.length > 0) {
       loadScriptQueue(code.scripts, () => {
         newVue(code.js, code.html)

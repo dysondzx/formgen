@@ -29,7 +29,6 @@ export function makeUpJs(formConfig, type) {
   formConfig.fields.forEach(el => {
     buildAttributes(el, dataList, ruleList, optionsList, methodList, propsList, uploadVarList, fileList, contentList, created)
   })
-
   const script = buildexport(
     formConfig,
     type,
@@ -184,9 +183,17 @@ function buildFileList(scheme, files) {
 function buildTextContent(scheme, contentList) {
   if (scheme.__vModel__ === undefined) return
   // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
-  const { content } = scheme.__slot__
+  let { content } = scheme.__slot__
+  content = replaceUrl(content)
   const str = `${scheme.__vModel__}Content: '${content}',`
   contentList.push(str)
+}
+
+function replaceUrl(txt) {
+  txt = txt.replace(/[\r\n]/g, '<br/>')
+  const reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|#|-)+)/g
+  const result = txt.replace(reg, item => `<a href=${item} target=_blank>${item}</a>`)
+  return result
 }
 
 function buildProps(scheme, propsList) {

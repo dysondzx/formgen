@@ -360,7 +360,7 @@ function buildRemarkTextChild(scheme) {
   const slot = scheme.__slot__
   if (slot && slot.content) {
     children.push(`
-    <p>{{${scheme.__vModel__}Content}}</p>
+    <p v-html="${scheme.__vModel__}Content"></p>
     `)
   }
   return children.join('\n')

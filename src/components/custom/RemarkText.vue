@@ -1,6 +1,6 @@
 <template>
   <div class="remark-text-container">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

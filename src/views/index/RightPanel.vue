@@ -1,16 +1,22 @@
 <template>
   <div class="right-board">
-    <el-tabs v-model="currentTab"
+    <!-- <el-tabs v-model="currentTab"
              class="center-tabs">
       <el-tab-pane label="组件属性"
                    name="field" />
       <el-tab-pane label="表单属性"
                    name="form" />
-    </el-tabs>
+    </el-tabs> -->
+    <el-button type="text" @click="run">
+      预览
+    </el-button>
+    <el-button class="copy-btn-main" type="text" @click="save">
+      保存
+    </el-button>
     <div class="field-box">
       <el-scrollbar class="right-scrollbar">
         <!-- 组件属性 -->
-        <el-form v-show="currentTab==='field' && showField"
+        <el-form v-show="showField"
                  v-if="activeData"
                  size="small"
                  label-width="90px">
@@ -644,7 +650,7 @@
           </template>
         </el-form>
         <!-- 表单属性 -->
-        <el-form v-show="currentTab === 'form'"
+        <!-- <el-form v-show="currentTab === 'form'"
                  size="small"
                  label-width="90px">
           <el-form-item label="表单名">
@@ -704,7 +710,7 @@
           <el-form-item label="显示未选中组件边框">
             <el-switch v-model="formConf.unFocusedComponentBorder" />
           </el-form-item>
-        </el-form>
+        </el-form> -->
       </el-scrollbar>
     </div>
 
@@ -715,18 +721,30 @@
                   :visible.sync="iconsVisible"
                   :current="activeData[currentIconModel]"
                   @select="setIcon" />
+    <form-drawer :visible.sync="drawerVisible"
+                 :generate-conf="generateConf"
+                 :form-data="formData"
+                 ref="formDrawerRef"
+                 size="100%" />
+    <code-type-dialog :visible.sync="geneTypeVisible"
+                      title="选择生成类型"
+                      @confirm="generate" />
+    <input id="copyNode"
+           type="hidden">
   </div>
 </template>
 
 <script>
 import { isArray } from 'util'
 import TreeNodeDialog from '@/views/index/TreeNodeDialog'
-import { isNumberStr } from '@/utils/index'
+import { isNumberStr, titleCase, deepClone } from '@/utils/index'
 import IconsDialog from './IconsDialog'
 import {
   inputComponents, selectComponents, layoutComponents
 } from '@/components/generator/config'
 import { saveFormConf } from '@/utils/db'
+import FormDrawer from './FormDrawer'
+import CodeTypeDialog from './CodeTypeDialog'
 
 const dateTimeFormat = {
   date: 'yyyy-MM-dd',
@@ -745,9 +763,11 @@ const needRerenderList = ['tinymce']
 export default {
   components: {
     TreeNodeDialog,
-    IconsDialog
+    IconsDialog,
+    FormDrawer,
+    CodeTypeDialog
   },
-  props: ['showField', 'activeData', 'formConf'],
+  props: ['showField', 'activeData', 'formConf', 'drawingList'],
   data () {
     return {
       currentTab: 'field',
@@ -755,6 +775,10 @@ export default {
       dialogVisible: false,
       iconsVisible: false,
       currentIconModel: null,
+      drawerVisible: false,
+      geneTypeVisible: false,
+      formData: {},
+      generateConf: null,
       dateTypeOptions: [
         {
           label: '日(date)',
@@ -878,6 +902,28 @@ export default {
     }
   },
   methods: {
+    run () {
+      this.geneTypeVisible = true
+      this.operationType = 'run'
+    },
+    save () {
+      console.log('调用保存接口:')
+    },
+    generate (data) {
+      const func = this[`exec${titleCase(this.operationType)}`]
+      this.generateConf = data
+      func && func(data)
+    },
+    execRun (data) {
+      this.AssembleFormData()
+      this.drawerVisible = true
+    },
+    AssembleFormData () {
+      this.formData = {
+        fields: deepClone(this.drawingList),
+        ...this.formConf
+      }
+    },
     addReg () {
       this.activeData.__config__.regList.push({
         pattern: '',

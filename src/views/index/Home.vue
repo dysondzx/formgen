@@ -39,7 +39,14 @@
 
     <div class="center-board">
       <div class="action-bar">
-        <el-button icon="el-icon-video-play"
+        <el-tabs v-model="currentTab"
+             class="center-tabs">
+          <el-tab-pane label="组件属性"
+                      name="field" />
+          <el-tab-pane label="表单属性"
+                      name="form" />
+        </el-tabs>
+        <!-- <el-button icon="el-icon-video-play"
                    type="text"
                    @click="run">
           运行
@@ -49,9 +56,9 @@
                    @click="showJson">
           查看json
         </el-button>
-        <!-- <el-button icon="el-icon-download" type="text" @click="download">
+        <el-button icon="el-icon-download" type="text" @click="download">
           导出vue文件
-        </el-button> -->
+        </el-button>
         <el-button class="copy-btn-main"
                    icon="el-icon-document-copy"
                    type="text"
@@ -63,12 +70,13 @@
                    type="text"
                    @click="empty">
           清空
-        </el-button>
+        </el-button> -->
       </div>
       <el-scrollbar class="center-scrollbar">
         <el-row class="center-board-row"
                 :gutter="formConf.gutter">
           <el-form :size="formConf.size"
+                    v-show="currentTab==='field'"
                    :label-position="formConf.labelPosition"
                    :disabled="formConf.disabled"
                    :label-width="formConf.labelWidth + 'px'">
@@ -91,16 +99,23 @@
               从左侧拖入或点选组件进行表单设计
             </div>
           </el-form>
+          <el-form :size="formConf.size"
+                    v-show="currentTab==='form'"
+                   :label-position="formConf.labelPosition"
+                   :disabled="formConf.disabled"
+                   :label-width="formConf.labelWidth + 'px'">
+          </el-form>
         </el-row>
       </el-scrollbar>
     </div>
 
     <right-panel :active-data="activeData"
                  :form-conf="formConf"
+                 :drawing-list="drawingList"
                  :show-field="!!drawingList.length"
                  @fetch-data="fetchData" />
 
-    <form-drawer :visible.sync="drawerVisible"
+    <!-- <form-drawer :visible.sync="drawerVisible"
                  :generate-conf="generateConf"
                  :form-data="formData"
                  ref="formDrawerRef"
@@ -113,7 +128,7 @@
                       title="选择生成类型"
                       @confirm="generate" />
     <input id="copyNode"
-           type="hidden">
+           type="hidden"> -->
   </div>
 </template>
 
@@ -151,10 +166,10 @@ export default {
   components: {
     draggable,
     render,
-    FormDrawer,
-    JsonDrawer,
+    // FormDrawer,
+    // JsonDrawer,
     RightPanel,
-    CodeTypeDialog,
+    // CodeTypeDialog,
     DraggableItem
   },
   data () {
@@ -162,6 +177,7 @@ export default {
       logo,
       idGlobal: 100,
       formConf,
+      currentTab: 'field',
       inputComponents,
       selectComponents,
       layoutComponents,

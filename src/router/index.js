@@ -11,11 +11,6 @@ const routes = [
     component: Home
   },
   {
-    path: '/parser',
-    name: 'parser',
-    component: () => import(/* webpackChunkName: "parser-example" */'@/components/parser/example/Index.vue')
-  },
-  {
     path: '/tinymce',
     name: 'tinymce',
     component: () => import(/* webpackChunkName: "tinymce-example" */'@/components/tinymce/example/Index.vue')

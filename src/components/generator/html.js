@@ -195,8 +195,8 @@ const tags = {
     const {
       tag, disabled, vModel, clearable, placeholder, width
     } = attrBuilder(el)
-    const options = el.options ? `:options="${el.__vModel__}Options"` : ''
-    const props = el.props ? `:props="${el.__vModel__}Props"` : ''
+    const options = el.options ? `:options="${el.__config__.renderKey}Options"` : ''
+    const props = el.props ? `:props="${el.__config__.renderKey}Props"` : ''
     const showAllLevels = el['show-all-levels'] ? '' : ':show-all-levels="false"'
     const filterable = el.filterable ? 'filterable' : ''
     const separator = el.separator === '/' ? '' : `separator="${el.separator}"`
@@ -261,15 +261,15 @@ const tags = {
   'el-upload': el => {
     const { tag } = el.__config__
     const disabled = el.disabled ? ':disabled=\'true\'' : ''
-    const action = el.action ? `:action="${el.__vModel__}Action"` : ''
+    const action = el.action ? `:action="${el.__config__.renderKey}Action"` : ''
     const multiple = el.multiple ? 'multiple' : ''
     const listType = el['list-type'] !== 'text' ? `list-type="${el['list-type']}"` : ''
     const accept = el.accept ? `accept="${el.accept}"` : ''
     const name = el.name !== 'file' ? `name="${el.name}"` : ''
     const autoUpload = el['auto-upload'] === false ? ':auto-upload="false"' : ''
-    const beforeUpload = `:before-upload="${el.__vModel__}BeforeUpload"`
-    const fileList = `:file-list="${el.__vModel__}fileList"`
-    const ref = `ref="${el.__vModel__}"`
+    const beforeUpload = `:before-upload="${el.__config__.renderKey}BeforeUpload"`
+    const fileList = `:file-list="${el.__config__.renderKey}fileList"`
+    const ref = `ref="${el.__config__.renderKey}"`
     let child = buildElUploadChild(el)
 
     if (child) child = `\n${child}\n` // 换行
@@ -338,7 +338,7 @@ function buildElSelectChild(scheme) {
   const children = []
   const slot = scheme.__slot__
   if (slot && slot.options && slot.options.length) {
-    children.push(`<el-option v-for="(item, index) in ${scheme.__vModel__}Options" :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>`)
+    children.push(`<el-option v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>`)
   }
   return children.join('\n')
 }
@@ -348,7 +348,7 @@ function buildFileListChild(scheme) {
   const slot = scheme.__slot__
   if (slot && slot.fileList && slot.fileList.length) {
     children.push(`
-    <div v-for="(item, idx) in ${scheme.__vModel__}FileList" :key="idx" class="file-list-container">
+    <div v-for="(item, idx) in ${scheme.__config__.renderKey}FileList" :key="idx" class="file-list-container">
       <span>{{(idx+1)+'.'}}&nbsp;<a href="javascript:;" @click="downloadFile(item.url)">{{item.name}}</a></span>
     </div>
     `)
@@ -360,7 +360,7 @@ function buildRemarkTextChild(scheme) {
   const slot = scheme.__slot__
   if (slot && slot.content) {
     children.push(`
-    <p v-html="${scheme.__vModel__}Content"></p>
+    <p v-html="${scheme.__config__.renderKey}Content"></p>
     `)
   }
   return children.join('\n')
@@ -374,7 +374,7 @@ function buildElRadioGroupChild(scheme) {
   if (slot && slot.options && slot.options.length) {
     const tag = config.optionType === 'button' ? 'el-radio-button' : 'el-radio'
     const border = config.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${scheme.__vModel__}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
   return children.join('\n')
 }
@@ -387,7 +387,7 @@ function buildElCheckboxGroupChild(scheme) {
   if (slot && slot.options && slot.options.length) {
     const tag = config.optionType === 'button' ? 'el-checkbox-button' : 'el-checkbox'
     const border = config.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${scheme.__vModel__}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
   return children.join('\n')
 }

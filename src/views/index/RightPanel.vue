@@ -1,12 +1,5 @@
 <template>
   <div class="right-board">
-    <!-- <el-tabs v-model="currentTab"
-             class="center-tabs">
-      <el-tab-pane label="组件属性"
-                   name="field" />
-      <el-tab-pane label="表单属性"
-                   name="form" />
-    </el-tabs> -->
     <el-button type="text" @click="run">
       预览
     </el-button>
@@ -20,12 +13,6 @@
                  v-if="activeData"
                  size="small"
                  label-width="90px">
-          <el-form-item class="form-item-data"
-                        v-if="activeData.__vModel__!==undefined"
-                        label="字段名">
-            <el-input v-model="activeData.__vModel__"
-                      placeholder="请输入字段名（v-model）" />
-          </el-form-item>
           <el-form-item v-if="activeData.__config__.componentName!==undefined"
                         label="组件名">
             {{ activeData.__config__.componentName }}
@@ -67,7 +54,7 @@
           <!-- <el-form-item v-if="activeData.style&&activeData.style.width!==undefined" label="组件宽度">
             <el-input v-model="activeData.style.width" placeholder="请输入组件宽度" clearable />
           </el-form-item> -->
-          <el-form-item v-if="activeData.__vModel__!==undefined"
+          <el-form-item v-if="activeData.__config__.layout==='colFormItem'"
                         label="默认值">
             <el-input :value="setDefaultValue(activeData.__config__.defaultValue)"
                       placeholder="请输入默认值"
@@ -649,68 +636,6 @@
             </div>
           </template>
         </el-form>
-        <!-- 表单属性 -->
-        <!-- <el-form v-show="currentTab === 'form'"
-                 size="small"
-                 label-width="90px">
-          <el-form-item label="表单名">
-            <el-input v-model="formConf.formRef"
-                      placeholder="请输入表单名（ref）" />
-          </el-form-item>
-          <el-form-item label="表单模型">
-            <el-input v-model="formConf.formModel"
-                      placeholder="请输入数据模型" />
-          </el-form-item>
-          <el-form-item label="校验模型">
-            <el-input v-model="formConf.formRules"
-                      placeholder="请输入校验模型" />
-          </el-form-item>
-          <el-form-item label="表单尺寸">
-            <el-radio-group v-model="formConf.size">
-              <el-radio-button label="medium">
-                中等
-              </el-radio-button>
-              <el-radio-button label="small">
-                较小
-              </el-radio-button>
-              <el-radio-button label="mini">
-                迷你
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="标签对齐">
-            <el-radio-group v-model="formConf.labelPosition">
-              <el-radio-button label="left">
-                左对齐
-              </el-radio-button>
-              <el-radio-button label="right">
-                右对齐
-              </el-radio-button>
-              <el-radio-button label="top">
-                顶部对齐
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="标签宽度">
-            <el-input v-model.number="formConf.labelWidth"
-                      type="number"
-                      placeholder="请输入标签宽度" />
-          </el-form-item>
-          <el-form-item label="栅格间隔">
-            <el-input-number v-model="formConf.gutter"
-                             :min="0"
-                             placeholder="栅格间隔" />
-          </el-form-item>
-          <el-form-item label="禁用表单">
-            <el-switch v-model="formConf.disabled" />
-          </el-form-item>
-          <el-form-item label="表单按钮">
-            <el-switch v-model="formConf.formBtns" />
-          </el-form-item>
-          <el-form-item label="显示未选中组件边框">
-            <el-switch v-model="formConf.unFocusedComponentBorder" />
-          </el-form-item>
-        </el-form> -->
       </el-scrollbar>
     </div>
 
@@ -737,14 +662,20 @@
 <script>
 import { isArray } from 'util'
 import TreeNodeDialog from '@/views/index/TreeNodeDialog'
-import { isNumberStr, titleCase, deepClone } from '@/utils/index'
-import IconsDialog from './IconsDialog'
 import {
-  inputComponents, selectComponents, layoutComponents
-} from '@/components/generator/config'
+  isNumberStr, beautifierConf, titleCase, deepClone
+} from '@/utils/index'
+import IconsDialog from './IconsDialog'
 import { saveFormConf } from '@/utils/db'
 import FormDrawer from './FormDrawer'
 import CodeTypeDialog from './CodeTypeDialog'
+import loadBeautifier from '@/utils/loadBeautifier'
+import ClipboardJS from 'clipboard'
+import {
+  makeUpHtml, vueTemplate, vueScript, cssStyle
+} from '@/components/generator/html'
+import { makeUpJs } from '@/components/generator/js'
+import { makeUpCss } from '@/components/generator/css'
 
 const dateTimeFormat = {
   date: 'yyyy-MM-dd',
@@ -759,6 +690,7 @@ const dateTimeFormat = {
 
 // 使changeRenderKey在目标组件改变时可用
 const needRerenderList = ['tinymce']
+let beautifier
 
 export default {
   components: {
@@ -768,9 +700,8 @@ export default {
     CodeTypeDialog
   },
   props: ['showField', 'activeData', 'formConf', 'drawingList'],
-  data () {
+  data() {
     return {
-      currentTab: 'field',
       currentNode: null,
       dialogVisible: false,
       iconsVisible: false,
@@ -837,38 +768,16 @@ export default {
           value: 'hsl'
         }
       ],
-      justifyOptions: [
-        {
-          label: 'start',
-          value: 'start'
-        },
-        {
-          label: 'end',
-          value: 'end'
-        },
-        {
-          label: 'center',
-          value: 'center'
-        },
-        {
-          label: 'space-around',
-          value: 'space-around'
-        },
-        {
-          label: 'space-between',
-          value: 'space-between'
-        }
-      ],
       layoutTreeProps: {
-        label (data, node) {
+        label(data, node) {
           const config = data.__config__
-          return data.componentName || `${config.label}: ${data.__vModel__}`
+          return data.componentName || `${config.label}`
         }
       }
     }
   },
   computed: {
-    dateOptions () {
+    dateOptions() {
       if (
         this.activeData.type !== undefined
         && this.activeData.__config__.tag === 'el-date-picker'
@@ -880,68 +789,95 @@ export default {
       }
       return []
     },
-    activeTag () {
+    activeTag() {
       return this.activeData.__config__.tag
     },
-    isShowMin () {
+    isShowMin() {
       return ['el-input-number', 'el-slider'].indexOf(this.activeTag) > -1
     },
-    isShowMax () {
+    isShowMax() {
       return ['el-input-number', 'el-slider', 'el-rate'].indexOf(this.activeTag) > -1
     },
-    isShowStep () {
+    isShowStep() {
       return ['el-input-number', 'el-slider'].indexOf(this.activeTag) > -1
     }
   },
   watch: {
     formConf: {
-      handler (val) {
+      handler(val) {
         saveFormConf(val)
       },
       deep: true
     }
   },
+  mounted() {
+    loadBeautifier(btf => {
+      beautifier = btf
+    })
+    const clipboard = new ClipboardJS('#copyNode', {
+      text: trigger => {
+        const codeStr = this.generateCode()
+        this.$notify({
+          title: '成功',
+          message: '代码已复制到剪切板，可粘贴。',
+          type: 'success'
+        })
+        return codeStr
+      }
+    })
+    clipboard.on('error', e => {
+      this.$message.error('代码复制失败')
+    })
+  },
   methods: {
-    run () {
+    run() {
       this.geneTypeVisible = true
       this.operationType = 'run'
     },
-    save () {
+    save() {
       console.log('调用保存接口:')
     },
-    generate (data) {
+    generate(data) {
       const func = this[`exec${titleCase(this.operationType)}`]
       this.generateConf = data
       func && func(data)
     },
-    execRun (data) {
+    execRun(data) {
       this.AssembleFormData()
       this.drawerVisible = true
     },
-    AssembleFormData () {
+    generateCode() {
+      const { type } = this.generateConf
+      this.AssembleFormData()
+      const script = vueScript(makeUpJs(this.formData, type))
+      const html = vueTemplate(makeUpHtml(this.formData, type))
+      const css = cssStyle(makeUpCss(this.formData))
+      return beautifier.html(html + script + css, beautifierConf.html)
+    },
+    AssembleFormData() {
       this.formData = {
         fields: deepClone(this.drawingList),
         ...this.formConf
       }
     },
-    addReg () {
+    addReg() {
       this.activeData.__config__.regList.push({
         pattern: '',
         message: ''
       })
     },
-    addSelectItem () {
+    addSelectItem() {
       this.activeData.__slot__.options.push({
         label: '',
         value: ''
       })
     },
-    addTreeItem () {
+    addTreeItem() {
       ++this.idGlobal
       this.dialogVisible = true
       this.currentNode = this.activeData.options
     },
-    renderContent (h, { node, data, store }) {
+    renderContent(h, { node, data, store }) {
       return (
         <div class="custom-tree-node">
           <span>{node.label}</span>
@@ -958,27 +894,27 @@ export default {
         </div>
       )
     },
-    append (data) {
+    append(data) {
       if (!data.children) {
         this.$set(data, 'children', [])
       }
       this.dialogVisible = true
       this.currentNode = data.children
     },
-    remove (node, data) {
+    remove(node, data) {
       this.activeData.__config__.defaultValue = [] // 避免删除时报错
       const { parent } = node
       const children = parent.data.children || parent.data
       const index = children.findIndex(d => d.id === data.id)
       children.splice(index, 1)
     },
-    addNode (data) {
+    addNode(data) {
       this.currentNode.push(data)
     },
-    setOptionValue (item, val) {
+    setOptionValue(item, val) {
       item.value = isNumberStr(val) ? +val : val
     },
-    setDefaultValue (val) {
+    setDefaultValue(val) {
       if (Array.isArray(val)) {
         return val.join(',')
       }
@@ -990,7 +926,7 @@ export default {
       }
       return val
     },
-    onDefaultValueInput (str) {
+    onDefaultValueInput(str) {
       if (isArray(this.activeData.__config__.defaultValue)) {
         // 数组
         this.$set(
@@ -1010,77 +946,77 @@ export default {
         )
       }
     },
-    onSwitchValueInput (val, name) {
+    onSwitchValueInput(val, name) {
       if (['true', 'false'].indexOf(val) > -1) {
         this.$set(this.activeData, name, JSON.parse(val))
       } else {
         this.$set(this.activeData, name, isNumberStr(val) ? +val : val)
       }
     },
-    setTimeValue (val, type) {
+    setTimeValue(val, type) {
       const valueFormat = type === 'week' ? dateTimeFormat.date : val
       this.$set(this.activeData.__config__, 'defaultValue', null)
       this.$set(this.activeData, 'value-format', valueFormat)
       this.$set(this.activeData, 'format', val)
     },
-    spanChange (val) {
+    spanChange(val) {
       this.formConf.span = val
     },
-    multipleChange (val) {
+    multipleChange(val) {
       this.$set(this.activeData.__config__, 'defaultValue', val ? [] : '')
     },
-    dateTypeChange (val) {
+    dateTypeChange(val) {
       this.setTimeValue(dateTimeFormat[val], val)
     },
-    rangeChange (val) {
+    rangeChange(val) {
       this.$set(
         this.activeData.__config__,
         'defaultValue',
         val ? [this.activeData.min, this.activeData.max] : this.activeData.min
       )
     },
-    rateTextChange (val) {
+    rateTextChange(val) {
       if (val) this.activeData['show-score'] = false
     },
-    rateScoreChange (val) {
+    rateScoreChange(val) {
       if (val) this.activeData['show-text'] = false
     },
-    colorFormatChange (val) {
+    colorFormatChange(val) {
       this.activeData.__config__.defaultValue = null
       this.activeData['show-alpha'] = val.indexOf('a') > -1
       this.activeData.__config__.renderKey = +new Date() // 更新renderKey,重新渲染该组件
     },
-    openIconsDialog (model) {
+    openIconsDialog(model) {
       this.iconsVisible = true
       this.currentIconModel = model
     },
-    setIcon (val) {
+    setIcon(val) {
       this.activeData[this.currentIconModel] = val
     },
-    changeRenderKey () {
+    changeRenderKey() {
       if (needRerenderList.includes(this.activeData.__config__.tag)) {
         this.activeData.__config__.renderKey = +new Date()
       }
     },
-    handleRemove (file, fileList) {
+    handleRemove(file, fileList) {
       console.log(file, fileList)
     },
-    handlePreview (file) {
+    handlePreview(file) {
       console.log(file)
     },
-    handleExceed (files, fileList) {
+    handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
-    beforeRemove (file, fileList) {
+    beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
     },
-    handleSuccess (response, file, fileList) {
+    handleSuccess(response, file, fileList) {
       this.activeData.__slot__.fileList.push({ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' })
     },
-    hanldeError (err, file, fileList) {
+    hanldeError(err, file, fileList) {
       this.activeData.__slot__.fileList.push({ name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' })
     },
-    handleBeforeUpload (file) {
+    handleBeforeUpload(file) {
     }
   }
 }

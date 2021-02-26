@@ -47,11 +47,12 @@ function emitEvents(confClone) {
 }
 
 function buildDataObject(confClone, dataObject) {
+  if (confClone.__config__.layout === 'colFormItem') {
+    vModel.call(this, dataObject, confClone.__config__.defaultValue)
+  }
   Object.keys(confClone).forEach(key => {
     const val = confClone[key]
-    if (key === '__vModel__') {
-      vModel.call(this, dataObject, confClone.__config__.defaultValue)
-    } else if (dataObject[key] !== undefined) {
+    if (dataObject[key] !== undefined) {
       if (dataObject[key] === null
         || dataObject[key] instanceof RegExp
         || ['boolean', 'string', 'number', 'function'].includes(typeof dataObject[key])) {

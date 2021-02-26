@@ -53,6 +53,13 @@ input, textarea{
   .el-scrollbar__view {
     padding: 12px 18px 15px 15px;
   }
+  .el-form-item__label{
+    text-align: left;
+    float: none;
+  }
+  .el-form-item__content{
+    margin-left: 0px !important;
+  }
 }
 .el-scrollbar__wrap {
   box-sizing: border-box;
@@ -62,6 +69,8 @@ input, textarea{
 .center-tabs{
   .el-tabs__header{
     margin-bottom: 0!important;
+    height: 50px;
+    background: #fff;
   }
   .el-tabs__item{
     width: 50%;

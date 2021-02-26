@@ -1,18 +1,25 @@
 <template>
   <div class="form-drawer-container">
-    <el-dialog v-bind="$attrs" width="50%" title="预览" top="2vh" class="drawer-dialog" v-on="$listeners" @opened="onOpen" @close="onClose">
+    <el-dialog v-bind="$attrs"
+               width="50%"
+               title="预览"
+               top="2vh"
+               class="drawer-dialog"
+               v-on="$listeners"
+               @opened="onOpen"
+               @close="onClose">
       <div style="height:100%">
         <el-row style="height:100%;overflow:auto">
           <el-col class="right-preview">
-            <iframe
-              v-show="isIframeLoaded"
-              ref="previewPage"
-              class="result-wrapper"
-              frameborder="0"
-              src="preview.html"
-              @load="iframeLoad"
-            />
-            <div v-show="!isIframeLoaded" v-loading="true" class="result-wrapper" />
+            <iframe v-show="isIframeLoaded"
+                    ref="previewPage"
+                    class="result-wrapper"
+                    frameborder="0"
+                    src="preview.html"
+                    @load="iframeLoad" />
+            <div v-show="!isIframeLoaded"
+                 v-loading="true"
+                 class="result-wrapper" />
           </el-col>
         </el-row>
       </div>
@@ -49,7 +56,7 @@ let monaco
 export default {
   components: { ResourceDialog },
   props: ['formData', 'generateConf'],
-  data() {
+  data () {
     return {
       activeTab: 'html',
       htmlCode: '',
@@ -65,14 +72,14 @@ export default {
     }
   },
   computed: {
-    resources() {
+    resources () {
       return this.scripts.concat(this.links)
     }
   },
   watch: {},
-  created() {
+  created () {
   },
-  mounted() {
+  mounted () {
     window.addEventListener('keydown', this.preventDefaultSave)
     const clipboard = new ClipboardJS('.copy-btn', {
       text: trigger => {
@@ -89,16 +96,16 @@ export default {
       this.$message.error('代码复制失败')
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('keydown', this.preventDefaultSave)
   },
   methods: {
-    preventDefaultSave(e) {
+    preventDefaultSave (e) {
       if (e.key === 's' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
       }
     },
-    onOpen() {
+    onOpen () {
       const { type } = this.generateConf
       this.htmlCode = makeUpHtml(this.formData, type)
       this.jsCode = makeUpJs(this.formData, type)
@@ -126,17 +133,17 @@ export default {
       //   })
       // })
     },
-    onClose() {
+    onClose () {
       this.isInitcode = false
       this.isRefreshCode = false
     },
-    iframeLoad() {
+    iframeLoad () {
       if (!this.isInitcode) {
         this.isIframeLoaded = true
         this.isRefreshCode && (this.isInitcode = true) && this.runCode()
       }
     },
-    setEditorValue(id, type, codeStr) {
+    setEditorValue (id, type, codeStr) {
       if (editorObj[type]) {
         editorObj[type].setValue(codeStr)
       } else {
@@ -154,7 +161,7 @@ export default {
         }
       })
     },
-    runCode() {
+    runCode () {
       const jsCodeStr = this.jsCode
       try {
         const ast = parse(jsCodeStr, { sourceType: 'module' })
@@ -198,13 +205,13 @@ export default {
         console.error(err)
       }
     },
-    generateCode() {
+    generateCode () {
       const html = vueTemplate(this.htmlCode)
       const script = vueScript(this.jsCode)
       const css = cssStyle(this.cssCode)
       return beautifier.html(html + script + css, beautifierConf.html)
     },
-    exportFile() {
+    exportFile () {
       this.$prompt('文件名:', '导出文件', {
         inputValue: `${+new Date()}.vue`,
         closeOnClickModal: false,
@@ -222,6 +229,12 @@ export default {
 
 <style lang="scss">
 .form-drawer-container {
+  .el-dialog__wrapper {
+    overflow: hidden;
+  }
+  .el-dialog {
+    margin-top: 6vh !important;
+  }
   .drawer-dialog .el-dialog .el-dialog__body {
     padding: 0px;
   }
@@ -239,7 +252,7 @@ export default {
     background: #1e1e1e;
     overflow: hidden;
   }
-  .setting{
+  .setting {
     position: absolute;
     right: 15px;
     top: 3px;
@@ -251,7 +264,7 @@ export default {
   .right-preview {
     height: 100%;
     .result-wrapper {
-      // height: 80vh;
+      height: 80vh;
       width: 100%;
       overflow: auto;
       box-sizing: border-box;
@@ -273,5 +286,4 @@ export default {
     }
   }
 }
-
 </style>

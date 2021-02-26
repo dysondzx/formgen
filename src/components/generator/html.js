@@ -131,7 +131,7 @@ const tags = {
     const showPassword = el['show-password'] ? 'show-password' : ''
     const type = el.type ? `type="${el.type}"` : ''
     const autosize = el.autosize && el.autosize.minRows
-      ? `:autosize="{minRows: ${el.autosize.minRows}, maxRows: ${el.autosize.maxRows}}"`
+      ? `:autosize="{minRows: ${el.autosize.minRows}}"`
       : ''
     let child = buildElInputChild(el)
 
@@ -372,7 +372,7 @@ function buildElRadioGroupChild(scheme) {
   const slot = scheme.__slot__
   const config = scheme.__config__
   if (slot && slot.options && slot.options.length) {
-    const tag = config.optionType === 'button' ? 'el-radio-button' : 'el-radio'
+    const tag = 'el-radio'
     const border = config.border ? 'border' : ''
     children.push(`<${tag} v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
@@ -385,7 +385,7 @@ function buildElCheckboxGroupChild(scheme) {
   const slot = scheme.__slot__
   const config = scheme.__config__
   if (slot && slot.options && slot.options.length) {
-    const tag = config.optionType === 'button' ? 'el-checkbox-button' : 'el-checkbox'
+    const tag = 'el-checkbox'
     const border = config.border ? 'border' : ''
     children.push(`<${tag} v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }

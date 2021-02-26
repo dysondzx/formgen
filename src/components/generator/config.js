@@ -22,12 +22,13 @@ export const basicComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: undefined,
+      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
       // 正则校验规则
-      regList: []
+      regList: [],
+      remark: null
     },
     // 其余的为可直接写在组件标签上的属性
     placeholder: '请输入',
@@ -44,17 +45,17 @@ export const basicComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'textarea',
-      defaultValue: undefined,
+      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
-      regList: []
+      regList: [],
+      remark: null
     },
     type: 'textarea',
     placeholder: '请输入',
     autosize: {
-      minRows: 4,
-      maxRows: 4
+      minRows: 3
     },
     style: { width: '100%' },
     maxlength: null,
@@ -69,7 +70,7 @@ export const basicComponents = [
   //     labelWidth: null,
   //     tag: 'el-input',
   //     tagIcon: 'password',
-  //     defaultValue: undefined,
+  //     defaultValue: null,
   //     layout: 'colFormItem',
   //     span: 24,
   //     required: true,
@@ -90,7 +91,7 @@ export const basicComponents = [
   //     labelWidth: null,
   //     tag: 'el-input-number',
   //     tagIcon: 'number',
-  //     defaultValue: undefined,
+  //     defaultValue: null,
   //     span: 24,
   //     layout: 'colFormItem',
   //     required: true,
@@ -112,13 +113,13 @@ export const basicComponents = [
       showLabel: true,
       tag: 'el-radio-group',
       tagIcon: 'radio',
-      defaultValue: undefined,
+      defaultValue: null,
       layout: 'colFormItem',
       span: 24,
-      optionType: 'default',
       regList: [],
       required: true,
-      border: false
+      border: false,
+      remark: null
     },
     __slot__: {
       options: [{
@@ -133,7 +134,7 @@ export const basicComponents = [
       }]
     },
     style: {},
-    size: 'medium',
+    // size: 'medium',
     disabled: false
   },
   {
@@ -146,10 +147,10 @@ export const basicComponents = [
       showLabel: true,
       labelWidth: null,
       layout: 'colFormItem',
-      optionType: 'default',
       required: true,
       regList: [],
-      border: false
+      border: false,
+      remark: null
     },
     __slot__: {
       options: [{
@@ -164,7 +165,7 @@ export const basicComponents = [
       }]
     },
     style: {},
-    size: 'medium',
+    // size: 'medium',
     min: null,
     max: null,
     disabled: false
@@ -175,7 +176,6 @@ export const basicComponents = [
       tag: 'el-upload',
       tagIcon: 'upload',
       layout: 'colFormItem',
-      defaultValue: null,
       showLabel: true,
       labelWidth: null,
       required: true,
@@ -196,7 +196,7 @@ export const basicComponents = [
     'auto-upload': true,
     'list-type': 'text',
     multiple: false
-  },
+  }
   // {
   //   __config__: {
   //     label: '编辑器',
@@ -499,7 +499,6 @@ export const layoutComponents = [
       tag: 'remark-upload',
       tagIcon: 'upload',
       layout: 'colFormItem',
-      defaultValue: null,
       labelWidth: null,
       required: true,
       span: 24,
@@ -533,7 +532,7 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: undefined,
+      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
@@ -556,7 +555,7 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: undefined,
+      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
@@ -579,7 +578,7 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: undefined,
+      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
@@ -602,7 +601,7 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: undefined,
+      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,

@@ -47,7 +47,7 @@ function emitEvents(confClone) {
 }
 
 function buildDataObject(confClone, dataObject) {
-  if (confClone.__config__.layout === 'colFormItem') {
+  if (confClone.__config__.defaultValue !== undefined) {
     vModel.call(this, dataObject, confClone.__config__.defaultValue)
   }
   Object.keys(confClone).forEach(key => {

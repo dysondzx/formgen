@@ -54,25 +54,11 @@
           <!-- <el-form-item v-if="activeData.style&&activeData.style.width!==undefined" label="组件宽度">
             <el-input v-model="activeData.style.width" placeholder="请输入组件宽度" clearable />
           </el-form-item> -->
-          <el-form-item v-if="activeData.__config__.layout==='colFormItem'"
+          <el-form-item v-if="activeData.__config__.defaultValue!==undefined"
                         label="默认值">
             <el-input :value="setDefaultValue(activeData.__config__.defaultValue)"
                       placeholder="请输入默认值"
                       @input="onDefaultValueInput" />
-          </el-form-item>
-          <el-form-item v-if="activeData.__config__.tag==='el-checkbox-group'"
-                        label="至少应选">
-            <el-input-number :value="activeData.min"
-                             :min="0"
-                             placeholder="至少应选"
-                             @input="$set(activeData, 'min', $event?$event:undefined)" />
-          </el-form-item>
-          <el-form-item v-if="activeData.__config__.tag==='el-checkbox-group'"
-                        label="最多可选">
-            <el-input-number :value="activeData.max"
-                             :min="0"
-                             placeholder="最多可选"
-                             @input="$set(activeData, 'max', $event?$event:undefined)" />
           </el-form-item>
           <el-form-item v-if="activeData['icon']!==undefined && activeData.__config__.tag === 'el-button'"
                         label="按钮图标">
@@ -91,16 +77,10 @@
                       placeholder="请输入选项分隔符" />
           </el-form-item>
           <el-form-item v-if="activeData.autosize !== undefined"
-                        label="最小行数">
+                        label="可见行数">
             <el-input-number v-model="activeData.autosize.minRows"
                              :min="1"
-                             placeholder="最小行数" />
-          </el-form-item>
-          <el-form-item v-if="activeData.autosize !== undefined"
-                        label="最大行数">
-            <el-input-number v-model="activeData.autosize.maxRows"
-                             :min="1"
-                             placeholder="最大行数" />
+                             placeholder="可见行数" />
           </el-form-item>
           <el-form-item v-if="isShowMin"
                         label="最小值">
@@ -406,17 +386,6 @@
             <el-divider />
           </template>
 
-          <el-form-item v-if="activeData.__config__.optionType !== undefined"
-                        label="选项样式">
-            <el-radio-group v-model="activeData.__config__.optionType">
-              <el-radio-button label="default">
-                默认
-              </el-radio-button>
-              <el-radio-button label="button">
-                按钮
-              </el-radio-button>
-            </el-radio-group>
-          </el-form-item>
           <el-form-item v-if="activeData['active-color'] !== undefined"
                         label="开启颜色">
             <el-color-picker v-model="activeData['active-color']" />
@@ -459,7 +428,7 @@
             <el-switch v-model="activeData.range"
                        @change="rangeChange" />
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.border !== undefined && activeData.__config__.optionType === 'default'"
+          <el-form-item v-if="activeData.__config__.border !== undefined"
                         label="是否带边框">
             <el-switch v-model="activeData.__config__.border" />
           </el-form-item>
@@ -475,24 +444,6 @@
                          :label="item.label"
                          :value="item.value" />
             </el-select>
-          </el-form-item>
-          <el-form-item v-if="activeData.size !== undefined &&
-              (activeData.__config__.optionType === 'button' ||
-                activeData.__config__.border ||
-                activeData.__config__.tag === 'el-color-picker' ||
-                activeData.__config__.tag === 'el-button')"
-                        label="组件尺寸">
-            <el-radio-group v-model="activeData.size">
-              <el-radio-button label="medium">
-                中等
-              </el-radio-button>
-              <el-radio-button label="small">
-                较小
-              </el-radio-button>
-              <el-radio-button label="mini">
-                迷你
-              </el-radio-button>
-            </el-radio-group>
           </el-form-item>
           <el-form-item v-if="activeData['show-word-limit'] !== undefined"
                         label="输入统计">

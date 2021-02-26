@@ -1,11 +1,13 @@
 <template>
   <div class="right-board">
-    <el-button type="text" @click="run">
+    <div class="right-bu">
+    <el-button class="run-btn" type="text" @click="run">
       预览
     </el-button>
     <el-button class="copy-btn-main" type="text" @click="save">
       保存
     </el-button>
+    </div>
     <div class="field-box">
       <el-scrollbar class="right-scrollbar">
         <!-- 组件属性 -->
@@ -979,6 +981,22 @@ export default {
   position: absolute;
   right: 0;
   top: 0;
+  .right-bu{
+    background: #fff;
+    text-align: right;
+    font-size: 16px;
+   .run-btn{
+    color: #ff4384;
+   }
+   .copy-btn-main{
+     width: 128px;
+     height: 50px;
+     background: #d9534f;
+     margin-left: 47px;
+     color: #fff;
+     border-radius: 0px;
+   }
+  }
   .field-box {
     position: relative;
     height: calc(100vh - 42px);

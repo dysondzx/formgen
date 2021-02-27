@@ -82,7 +82,7 @@ const layouts = {
     }
     const required = !ruleTrigger[config.tag] && config.required ? 'required' : ''
     const tagDom = tags[config.tag] ? tags[config.tag](scheme) : null
-    let str = `<el-form-item ${labelWidth} ${label} prop="${scheme.__vModel__}" ${required}>
+    let str = `<el-form-item ${labelWidth} ${label} prop="${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}" ${required}>
         ${tagDom}
       </el-form-item>`
     str = colWrapper(scheme, str)
@@ -164,21 +164,19 @@ const tags = {
   },
   'el-radio-group': el => {
     const { tag, disabled, vModel } = attrBuilder(el)
-    const size = `size="${el.size}"`
     let child = buildElRadioGroupChild(el)
 
     if (child) child = `\n${child}\n` // 换行
-    return `<${tag} ${vModel} ${size} ${disabled}>${child}</${tag}>`
+    return `<${tag} ${vModel} ${disabled}>${child}</${tag}>`
   },
   'el-checkbox-group': el => {
     const { tag, disabled, vModel } = attrBuilder(el)
-    const size = `size="${el.size}"`
     const min = el.min ? `:min="${el.min}"` : ''
     const max = el.max ? `:max="${el.max}"` : ''
     let child = buildElCheckboxGroupChild(el)
 
     if (child) child = `\n${child}\n` // 换行
-    return `<${tag} ${vModel} ${min} ${max} ${size} ${disabled}>${child}</${tag}>`
+    return `<${tag} ${vModel} ${min} ${max} ${disabled}>${child}</${tag}>`
   },
   'el-switch': el => {
     const { tag, disabled, vModel } = attrBuilder(el)
@@ -195,8 +193,8 @@ const tags = {
     const {
       tag, disabled, vModel, clearable, placeholder, width
     } = attrBuilder(el)
-    const options = el.options ? `:options="${el.__config__.renderKey}Options"` : ''
-    const props = el.props ? `:props="${el.__config__.renderKey}Props"` : ''
+    const options = el.options ? `:options="${el.__vModel__ !== undefined ? el.__vModel__ : el.__vModelTemp__}Options"` : ''
+    const props = el.props ? `:props="${el.__vModel__ !== undefined ? el.__vModel__ : el.__vModelTemp__}Props"` : ''
     const showAllLevels = el['show-all-levels'] ? '' : ':show-all-levels="false"'
     const filterable = el.filterable ? 'filterable' : ''
     const separator = el.separator === '/' ? '' : `separator="${el.separator}"`
@@ -261,15 +259,15 @@ const tags = {
   'el-upload': el => {
     const { tag } = el.__config__
     const disabled = el.disabled ? ':disabled=\'true\'' : ''
-    const action = el.action ? `:action="${el.__config__.renderKey}Action"` : ''
+    const action = el.action ? `:action="${el.__vModel__ !== undefined ? el.__vModel__ : el.__vModelTemp__}Action"` : ''
     const multiple = el.multiple ? 'multiple' : ''
     const listType = el['list-type'] !== 'text' ? `list-type="${el['list-type']}"` : ''
     const accept = el.accept ? `accept="${el.accept}"` : ''
     const name = el.name !== 'file' ? `name="${el.name}"` : ''
     const autoUpload = el['auto-upload'] === false ? ':auto-upload="false"' : ''
-    const beforeUpload = `:before-upload="${el.__config__.renderKey}BeforeUpload"`
-    const fileList = `:file-list="${el.__config__.renderKey}fileList"`
-    const ref = `ref="${el.__config__.renderKey}"`
+    const beforeUpload = `:before-upload="${el.__vModel__ !== undefined ? el.__vModel__ : el.__vModelTemp__}BeforeUpload"`
+    const fileList = `:file-list="${el.__vModel__ !== undefined ? el.__vModel__ : el.__vModelTemp__}fileList"`
+    const ref = `ref="${el.__vModel__ !== undefined ? el.__vModel__ : el.__vModelTemp__}"`
     let child = buildElUploadChild(el)
 
     if (child) child = `\n${child}\n` // 换行
@@ -302,7 +300,7 @@ const tags = {
 function attrBuilder(el) {
   return {
     tag: el.__config__.tag,
-    vModel: `v-model="${confGlobal.formModel}.${el.__vModel__}"`,
+    vModel: `v-model="${confGlobal.formModel}.${el.__vModel__ !== undefined ? el.__vModel__ : el.__vModelTemp__}"`,
     clearable: el.clearable ? 'clearable' : '',
     placeholder: el.placeholder ? `placeholder="${el.placeholder}"` : '',
     width: el.style && el.style.width ? ':style="{width: \'100%\'}"' : '',
@@ -338,7 +336,7 @@ function buildElSelectChild(scheme) {
   const children = []
   const slot = scheme.__slot__
   if (slot && slot.options && slot.options.length) {
-    children.push(`<el-option v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>`)
+    children.push(`<el-option v-for="(item, index) in ${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Options" :key="index" :label="item.label" :value="item.value" :disabled="item.disabled"></el-option>`)
   }
   return children.join('\n')
 }
@@ -348,7 +346,7 @@ function buildFileListChild(scheme) {
   const slot = scheme.__slot__
   if (slot && slot.fileList && slot.fileList.length) {
     children.push(`
-    <div v-for="(item, idx) in ${scheme.__config__.renderKey}FileList" :key="idx" class="file-list-container">
+    <div v-for="(item, idx) in ${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}FileList" :key="idx" class="file-list-container">
       <span>{{(idx+1)+'.'}}&nbsp;<a href="javascript:;" @click="downloadFile(item.url)">{{item.name}}</a></span>
     </div>
     `)
@@ -360,7 +358,7 @@ function buildRemarkTextChild(scheme) {
   const slot = scheme.__slot__
   if (slot && slot.content) {
     children.push(`
-    <p v-html="${scheme.__config__.renderKey}Content"></p>
+    <p v-html="${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Content"></p>
     `)
   }
   return children.join('\n')
@@ -374,7 +372,7 @@ function buildElRadioGroupChild(scheme) {
   if (slot && slot.options && slot.options.length) {
     const tag = 'el-radio'
     const border = config.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
   return children.join('\n')
 }
@@ -387,7 +385,7 @@ function buildElCheckboxGroupChild(scheme) {
   if (slot && slot.options && slot.options.length) {
     const tag = 'el-checkbox'
     const border = config.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${scheme.__config__.renderKey}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
   return children.join('\n')
 }

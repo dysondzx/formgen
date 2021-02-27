@@ -57,7 +57,7 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
   if (scheme.options || (slot && slot.options && slot.options.length)) {
     buildOptions(scheme, optionsList)
     if (config.dataType === 'dynamic') {
-      const model = `${scheme.__config__.renderKey}Options`
+      const model = `${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Options`
       const options = titleCase(model)
       const methodName = `get${options}`
       buildOptionMethod(methodName, model, methodList, scheme)
@@ -82,8 +82,8 @@ function buildAttributes(scheme, dataList, ruleList, optionsList, methodList, pr
   // 处理el-upload的action
   if (scheme.action && config.tag === 'el-upload') {
     uploadVarList.push(
-      `${scheme.__config__.renderKey}Action: '${scheme.action}',
-      ${scheme.__config__.renderKey}fileList: [],`
+      `${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Action: '${scheme.action}',
+      ${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}fileList: [],`
     )
     methodList.push(buildBeforeUpload(scheme))
     // 非自动上传时，生成手动上传的函数
@@ -131,15 +131,15 @@ function mixinMethod() {
 // 构建data
 function buildData(scheme, dataList) {
   const config = scheme.__config__
-  if (scheme.defaultValue === undefined) return
+  if (config.defaultValue === undefined) return
   const defaultValue = JSON.stringify(config.defaultValue)
-  dataList.push(`${scheme.__vModel__}: ${defaultValue},`)
+  dataList.push(`${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}: ${defaultValue},`)
 }
 
 // 构建校验规则
 function buildRules(scheme, ruleList) {
   const config = scheme.__config__
-  if (scheme.__config__.renderKey === undefined) return
+  if (scheme.__vModel__ === undefined && scheme.__vModelTemp__ === undefined) return
   const rules = []
   if (ruleTrigger[config.tag]) {
     if (config.required) {
@@ -157,35 +157,35 @@ function buildRules(scheme, ruleList) {
         }
       })
     }
-    ruleList.push(`${scheme.__config__.renderKey}: [${rules.join(',')}],`)
+    ruleList.push(`${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}: [${rules.join(',')}],`)
   }
 }
 
 // 构建options
 function buildOptions(scheme, optionsList) {
-  if (scheme.__config__.renderKey === undefined) return
+  if (scheme.__vModel__ === undefined && scheme.__vModelTemp__ === undefined) return
   // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
   let { options } = scheme
   if (!options) options = scheme.__slot__.options
   if (scheme.__config__.dataType === 'dynamic') { options = [] }
-  const str = `${scheme.__config__.renderKey}Options: ${JSON.stringify(options)},`
+  const str = `${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Options: ${JSON.stringify(options)},`
   optionsList.push(str)
 }
 // 构建fileList
 function buildFileList(scheme, files) {
-  if (scheme.__config__.renderKey === undefined) return
+  if (scheme.__vModel__ === undefined && scheme.__vModelTemp__ === undefined) return
   // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
   const { fileList } = scheme.__slot__
-  const str = `${scheme.__config__.renderKey}FileList: ${JSON.stringify(fileList)},`
+  const str = `${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}FileList: ${JSON.stringify(fileList)},`
   files.push(str)
 }
 
 function buildTextContent(scheme, contentList) {
-  if (scheme.__config__.renderKey === undefined) return
+  if (scheme.__vModel__ === undefined && scheme.__vModelTemp__ === undefined) return
   // el-cascader直接有options属性，其他组件都是定义在slot中，所以有两处判断
   let { content } = scheme.__slot__
   content = replaceUrl(content)
-  const str = `${scheme.__config__.renderKey}Content: '${content}',`
+  const str = `${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Content: '${content}',`
   contentList.push(str)
 }
 
@@ -197,7 +197,7 @@ function replaceUrl(txt) {
 }
 
 function buildProps(scheme, propsList) {
-  const str = `${scheme.__config__.renderKey}Props: ${JSON.stringify(scheme.props.props)},`
+  const str = `${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}Props: ${JSON.stringify(scheme.props.props)},`
   propsList.push(str)
 }
 
@@ -220,7 +220,7 @@ function buildBeforeUpload(scheme) {
     }`
     returnList.push('isAccept')
   }
-  const str = `${scheme.__config__.renderKey}BeforeUpload(file) {
+  const str = `${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}BeforeUpload(file) {
     ${rightSizeCode}
     ${acceptCode}
     return ${returnList.join('&&')}
@@ -231,7 +231,7 @@ function buildBeforeUpload(scheme) {
 // el-upload的submit
 function buildSubmitUpload(scheme) {
   const str = `submitUpload() {
-    this.$refs['${scheme.__config__.renderKey}'].submit()
+    this.$refs['${scheme.__vModel__ !== undefined ? scheme.__vModel__ : scheme.__vModelTemp__}'].submit()
   },`
   return str
 }
@@ -261,8 +261,7 @@ function buildDownloadFileMethod(methodList, scheme) {
 
 // js整体拼接
 function buildexport(conf, type, data, rules, selectOptions, uploadVar, props, methods, fileList, contentList, created) {
-  const str = `
-  ${exportDefault}{
+  const str = `${exportDefault}{
   inheritAttrs: false,
   components: {},
   props: [],

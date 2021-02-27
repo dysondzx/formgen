@@ -24,7 +24,6 @@ function init(event) {
   if (event.data.type === 'refreshFrame') {
     const code = event.data.data
     let links = ''
-
     if (Array.isArray(code.links) && code.links.length > 0) {
       links = buildLinks(code.links)
     }

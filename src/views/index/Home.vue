@@ -226,10 +226,11 @@ export default {
     createIdAndKey(item) {
       const config = item.__config__
       config.formId = ++this.idGlobal
-      config.renderKey = `k${config.formId}${+new Date()}` // 改变renderKey后可以实现强制更新组件
-      // if (config.layout === 'colFormItem') {
-      //   item.__vModel__ = `field${this.idGlobal}`
-      // }
+      config.renderKey = `${config.formId}${+new Date()}` // 改变renderKey后可以实现强制更新组件
+      if (config.layout === 'colFormItem') {
+        // item.__vModel__ = `field${this.idGlobal}`
+        item.__vModelTemp__ = `field${this.idGlobal}` // __vModel__需要由后台保存时生成，因此刚添加的控件，没有__vModel__
+      }
       if (config.layout === 'rowFormItem') {
         config.componentName = `row${this.idGlobal}`
         !Array.isArray(config.children) && (config.children = [])

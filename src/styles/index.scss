@@ -56,9 +56,19 @@ input, textarea{
   .el-form-item__label{
     text-align: left;
     float: none;
+    color: #333;
   }
   .el-form-item__content{
     margin-left: 0px !important;
+  }
+  .st-headline{
+    color: #333;
+    font-size: 14px;
+  }
+  .st-hint{
+    color: #999;
+    font-size: 14px;
+    margin-left: 10px;
   }
 }
 .el-scrollbar__wrap {

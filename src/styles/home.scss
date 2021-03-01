@@ -47,6 +47,7 @@ $lighterBlue: #409EFF;
   cursor: move;
   border: 1px dashed $selectedColor;
   border-radius: 3px;
+  color: #333;
   .svg-icon{
     color: #777;
     font-size: 15px;
@@ -61,7 +62,7 @@ $lighterBlue: #409EFF;
 }
 
 .left-board {
-  width: 252px;
+  width: 280px;
   position: absolute;
   left: 0;
   top: 0;
@@ -82,7 +83,7 @@ $lighterBlue: #409EFF;
 .center-board {
   height: 100vh;
   width: auto;
-  margin: 0 272px 0 252px;
+  margin: 0 272px 0 280px;
   box-sizing: border-box;
 }
 .empty-info{
@@ -128,7 +129,7 @@ $lighterBlue: #409EFF;
 .logo-wrapper{
   position: relative;
   height: 50px;
-  width: 263px;
+  width: 300px;
   background: #fff;
   box-sizing: border-box;
 }
@@ -199,9 +200,22 @@ $lighterBlue: #409EFF;
     & > .component-name{
       color: $lighterBlue;
     }
+    .el-form-item__label{
+      color: #333;
+      float: none;
+    }
+    .el-form-item__content{
+      margin-left: 8px !important;
+    }
   }
   .el-form-item{
     margin-bottom: 15px;
+  }
+  .el-input--medium {
+    .el-input__inner {
+      height: 32px;
+      line-height: 32px;
+    }
   }
 }
 .drawing-item{
@@ -212,6 +226,13 @@ $lighterBlue: #409EFF;
   }
   .el-form-item{
     padding: 12px 10px;
+  }
+  .el-form-item__label{
+    color: #333;
+    float: none;
+  }
+  .el-form-item__content{
+    margin-left: 8px !important;
   }
 }
 .drawing-row-item{

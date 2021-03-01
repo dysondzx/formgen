@@ -184,7 +184,8 @@ export const basicComponents = [
       buttonText: '点击上传',
       regList: [],
       fileSize: 2,
-      sizeUnit: 'MB'
+      sizeUnit: 'MB',
+      remark: null
     },
     __slot__: {
       'list-type': true
@@ -197,23 +198,6 @@ export const basicComponents = [
     'list-type': 'text',
     multiple: false
   }
-  // {
-  //   __config__: {
-  //     label: '编辑器',
-  //     showLabel: true,
-  //     labelWidth: null,
-  //     tag: 'tinymce',
-  //     tagIcon: 'rich-text',
-  //     defaultValue: null,
-  //     span: 24,
-  //     layout: 'colFormItem',
-  //     required: true,
-  //     regList: []
-  //   },
-  //   placeholder: '请输入',
-  //   height: 300, // 编辑器高度
-  //   branding: false // 隐藏右下角品牌烙印
-  // }
   // {
   //   __config__: {
   //     label: '下拉选择',
@@ -532,7 +516,6 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
@@ -555,7 +538,6 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
@@ -578,7 +560,6 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,
@@ -601,7 +582,6 @@ export const systemComponents = [
       showLabel: true,
       tag: 'el-input',
       tagIcon: 'input',
-      defaultValue: null,
       required: true,
       layout: 'colFormItem',
       span: 24,

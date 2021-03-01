@@ -273,12 +273,6 @@ const tags = {
     if (child) child = `\n${child}\n` // 换行
     return `<${tag} ${ref} ${fileList} ${action} ${autoUpload} ${multiple} ${beforeUpload} ${listType} ${accept} ${name} ${disabled}>${child}</${tag}>`
   },
-  tinymce: el => {
-    const { tag, vModel, placeholder } = attrBuilder(el)
-    const height = el.height ? `:height="${el.height}"` : ''
-    const branding = el.branding ? `:branding="${el.branding}"` : ''
-    return `<${tag} ${vModel} ${placeholder} ${height} ${branding}></${tag}>`
-  },
   'remark-upload': el => {
     const {
       tag, vModel, placeholder

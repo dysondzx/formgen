@@ -9,11 +9,6 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
-  },
-  {
-    path: '/tinymce',
-    name: 'tinymce',
-    component: () => import(/* webpackChunkName: "tinymce-example" */'@/components/tinymce/example/Index.vue')
   }
 ]
 

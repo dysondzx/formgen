@@ -22,14 +22,12 @@
           <el-form-item v-if="activeData.__config__.label!==undefined"
                         label="标题">
             <el-input v-model="activeData.__config__.label"
-                      placeholder="请输入标题"
-                      @input="changeRenderKey" />
+                      placeholder="请输入标题" />
           </el-form-item>
           <el-form-item v-if="activeData.placeholder!==undefined"
                         label="提示文字">
             <el-input v-model="activeData.placeholder"
-                      placeholder="请输入"
-                      @input="changeRenderKey" />
+                      placeholder="请输入" />
           </el-form-item>
           <el-form-item v-if="activeData['start-placeholder']!==undefined"
                         label="开始占位">
@@ -56,7 +54,7 @@
           <!-- <el-form-item v-if="activeData.style&&activeData.style.width!==undefined" label="组件宽度">
             <el-input v-model="activeData.style.width" placeholder="请输入组件宽度" clearable />
           </el-form-item> -->
-          <el-form-item v-if="activeData.__config__.defaultValue!==undefined"
+          <el-form-item v-if="activeData.__config__.defaultValue!==undefined && activeData.__config__.tag === 'el-input'"
                         label="默认值">
             <el-input :value="setDefaultValue(activeData.__config__.defaultValue)"
                       placeholder="请输入默认值"
@@ -97,8 +95,7 @@
           <el-form-item v-if="activeData.height!==undefined"
                         label="组件高度">
             <el-input-number v-model="activeData.height"
-                             placeholder="高度"
-                             @input="changeRenderKey" />
+                             placeholder="高度" />
           </el-form-item>
           <el-form-item v-if="isShowStep"
                         label="步长">
@@ -274,7 +271,7 @@
                       placeholder="请输入时间格式"
                       @input="setTimeValue($event)" />
           </el-form-item>
-          <template v-if="['el-checkbox-group', 'el-radio-group', 'el-select'].indexOf(activeData.__config__.tag) > -1">
+          <template v-if="['el-checkbox-group', 'el-select'].indexOf(activeData.__config__.tag) > -1">
             <el-divider>选项</el-divider>
             <draggable :list="activeData.__slot__.options"
                        :animation="340"
@@ -286,6 +283,7 @@
                 <div class="select-line-icon option-drag">
                   <i class="el-icon-s-operation" />
                 </div>
+                <el-checkbox :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item, true)"></el-checkbox>
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
@@ -310,79 +308,38 @@
             <el-divider />
           </template>
 
-          <template v-if="['el-cascader', 'el-table'].includes(activeData.__config__.tag)">
+          <template v-if="['el-radio-group'].indexOf(activeData.__config__.tag) > -1">
             <el-divider>选项</el-divider>
-            <el-form-item v-if="activeData.__config__.dataType"
-                          label="数据类型">
-              <el-radio-group v-model="activeData.__config__.dataType"
-                              size="small">
-                <el-radio-button label="dynamic">
-                  动态数据
-                </el-radio-button>
-                <el-radio-button label="static">
-                  静态数据
-                </el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-
-            <template v-if="activeData.__config__.dataType === 'dynamic'">
-              <el-form-item label="接口地址">
-                <el-input v-model="activeData.__config__.url"
-                          :title="activeData.__config__.url"
-                          placeholder="请输入接口地址"
-                          clearable
-                          @blur="$emit('fetch-data', activeData)">
-                  <el-select slot="prepend"
-                             v-model="activeData.__config__.method"
-                             :style="{width: '85px'}"
-                             @change="$emit('fetch-data', activeData)">
-                    <el-option label="get"
-                               value="get" />
-                    <el-option label="post"
-                               value="post" />
-                    <el-option label="put"
-                               value="put" />
-                    <el-option label="delete"
-                               value="delete" />
-                  </el-select>
-                </el-input>
-              </el-form-item>
-              <el-form-item label="数据位置">
-                <el-input v-model="activeData.__config__.dataPath"
-                          placeholder="请输入数据位置"
-                          @blur="$emit('fetch-data', activeData)" />
-              </el-form-item>
-
-              <template v-if="activeData.props && activeData.props.props">
-                <el-form-item label="标签键名">
-                  <el-input v-model="activeData.props.props.label"
-                            placeholder="请输入标签键名" />
-                </el-form-item>
-                <el-form-item label="值键名">
-                  <el-input v-model="activeData.props.props.value"
-                            placeholder="请输入值键名" />
-                </el-form-item>
-                <el-form-item label="子级键名">
-                  <el-input v-model="activeData.props.props.children"
-                            placeholder="请输入子级键名" />
-                </el-form-item>
-              </template>
-            </template>
-
-            <!-- 级联选择静态树 -->
-            <el-tree v-if="activeData.__config__.dataType === 'static'"
-                     draggable
-                     :data="activeData.options"
-                     node-key="id"
-                     :expand-on-click-node="false"
-                     :render-content="renderContent" />
-            <div v-if="activeData.__config__.dataType === 'static'"
-                 style="margin-left: 20px">
+            <draggable :list="activeData.__slot__.options"
+                       :animation="340"
+                       group="selectItem"
+                       handle=".option-drag">
+              <div v-for="(item, index) in activeData.__slot__.options"
+                   :key="index"
+                   class="select-item">
+                <div class="select-line-icon option-drag">
+                  <i class="el-icon-s-operation" />
+                </div>
+                <el-radio :key="activeData.__config__.tag + index" v-model="activeData.__config__.defaultValue" :label="item.value"><span></span></el-radio>
+                <el-input v-model="item.label"
+                          placeholder="选项名"
+                          size="small" />
+                <el-input placeholder="选项值"
+                          size="small"
+                          :value="item.value"
+                          @input="setOptionValue(item, $event)" />
+                <div class="close-btn select-line-icon"
+                     @click="activeData.__slot__.options.splice(index, 1)">
+                  <i class="el-icon-remove-outline" />
+                </div>
+              </div>
+            </draggable>
+            <div style="margin-left: 20px;">
               <el-button style="padding-bottom: 0"
                          icon="el-icon-circle-plus-outline"
                          type="text"
-                         @click="addTreeItem">
-                添加父级
+                         @click="addSelectItem">
+                添加选项
               </el-button>
             </div>
             <el-divider />
@@ -404,8 +361,7 @@
           </el-form-item>
           <el-form-item v-if="activeData.branding !== undefined"
                         label="品牌烙印">
-            <el-switch v-model="activeData.branding"
-                       @input="changeRenderKey" />
+            <el-switch v-model="activeData.branding" />
           </el-form-item>
           <el-form-item v-if="activeData['allow-half'] !== undefined"
                         label="允许半选">
@@ -514,7 +470,7 @@
             <span class="remark-tip">最多{{ activeData.maxlength?activeData.maxlength:50 }}字</span>
             <el-input v-model="activeData.__slot__.content"
                       type="textarea"
-                      :max-length="activeData.maxlength"
+                      :maxlength="activeData.maxlength"
                       :autosize="{ minRows: 2, maxRows: 4}"
                       placeholder="请输入说明文字" />
           </el-form-item>
@@ -543,7 +499,14 @@
               </div>
             </el-upload>
           </el-form-item>
-
+          <el-form-item v-if="activeData.__config__.remark !== undefined" class="remark-item" label="描述">
+            <span class="remark-tip">最多50字</span>
+            <el-input v-model="activeData.__config__.remark"
+                      type="textarea"
+                      maxlength="50"
+                      :autosize="{ minRows: 2, maxRows: 4}"
+                      placeholder="请输入描述" />
+          </el-form-item>
           <template v-if="activeData.__config__.layoutTree">
             <el-divider>布局结构树</el-divider>
             <el-tree :data="[activeData.__config__]"
@@ -641,8 +604,6 @@ const dateTimeFormat = {
   datetimerange: 'yyyy-MM-dd HH:mm:ss'
 }
 
-// 使changeRenderKey在目标组件改变时可用
-const needRerenderList = ['tinymce']
 let beautifier
 
 export default {
@@ -864,6 +825,18 @@ export default {
     addNode(data) {
       this.currentNode.push(data)
     },
+    checkChange(flag, item, isMultiple) {
+      if (flag) {
+        if (this.activeData.__config__.defaultValue.indexOf(item.value) === -1) {
+          this.activeData.__config__.defaultValue.push(item.value)
+        }
+      } else {
+        const idx = this.activeData.__config__.defaultValue.indexOf(item.value)
+        if (idx > -1) {
+          this.activeData.__config__.defaultValue.splice(idx, 1)
+        }
+      }
+    },
     setOptionValue(item, val) {
       item.value = isNumberStr(val) ? +val : val
     },
@@ -945,11 +918,6 @@ export default {
     },
     setIcon(val) {
       this.activeData[this.currentIconModel] = val
-    },
-    changeRenderKey() {
-      if (needRerenderList.includes(this.activeData.__config__.tag)) {
-        this.activeData.__config__.renderKey = +new Date()
-      }
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)

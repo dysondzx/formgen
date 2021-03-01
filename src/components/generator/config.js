@@ -311,7 +311,7 @@ export const layoutComponents = [
   },
   {
     __config__: {
-      label: '说明文字',
+      label: '描述说明',
       showLabel: false,
       tag: 'remark-text',
       tagIcon: 'input',

@@ -20,14 +20,26 @@
             {{ activeData.__config__.componentName }}
           </el-form-item>
           <el-form-item v-if="activeData.__config__.label!==undefined"
-                        label="标题">
+                        label="">
+            <div>
+              <span class="st-headline">标题</span>
+              <span class="st-hint">最多50字</span>
+            </div>
             <el-input v-model="activeData.__config__.label"
-                      placeholder="请输入标题" />
+                      placeholder="请输入标题"
+                      oninput="if(value.length > 50)value = value.slice(0, 50)"
+                      @input="changeRenderKey" />
           </el-form-item>
           <el-form-item v-if="activeData.placeholder!==undefined"
-                        label="提示文字">
+                        label="">
+            <div>
+              <span class="st-headline">提示文字</span>
+              <span class="st-hint">最多50字</span>
+            </div>            
             <el-input v-model="activeData.placeholder"
-                      placeholder="请输入" />
+                      placeholder="请输入"
+                      oninput="if(value.length > 50)value = value.slice(0, 50)"
+                      @input="changeRenderKey" />
           </el-form-item>
           <el-form-item v-if="activeData['start-placeholder']!==undefined"
                         label="开始占位">

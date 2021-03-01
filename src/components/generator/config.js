@@ -84,28 +84,6 @@ export const basicComponents = [
   //   readonly: false,
   //   disabled: false
   // },
-  // {
-  //   __config__: {
-  //     label: '数字',
-  //     showLabel: true,
-  //     labelWidth: null,
-  //     tag: 'el-input-number',
-  //     tagIcon: 'number',
-  //     defaultValue: null,
-  //     span: 24,
-  //     layout: 'colFormItem',
-  //     required: true,
-  //     regList: []
-  //   },
-  //   placeholder: '',
-  //   min: undefined,
-  //   max: undefined,
-  //   step: 1,
-  //   'step-strictly': false,
-  //   precision: undefined,
-  //   'controls-position': '',
-  //   disabled: false
-  // },
   {
     __config__: {
       label: '单选框',
@@ -228,92 +206,6 @@ export const basicComponents = [
   // },
   // {
   //   __config__: {
-  //     label: '级联选择',
-  //     url: 'https://www.fastmock.site/mock/f8d7a54fb1e60561e2f720d5a810009d/fg/cascaderList',
-  //     method: 'get',
-  //     dataPath: 'list',
-  //     dataConsumer: 'options',
-  //     showLabel: true,
-  //     labelWidth: null,
-  //     tag: 'el-cascader',
-  //     tagIcon: 'cascader',
-  //     layout: 'colFormItem',
-  //     defaultValue: [],
-  //     dataType: 'dynamic',
-  //     span: 24,
-  //     required: true,
-  //     regList: []
-  //   },
-  //   options: [{
-  //     id: 1,
-  //     value: 1,
-  //     label: '选项1',
-  //     children: [{
-  //       id: 2,
-  //       value: 2,
-  //       label: '选项1-1'
-  //     }]
-  //   }],
-  //   placeholder: '请选择',
-  //   style: { width: '100%' },
-  //   props: {
-  //     props: {
-  //       multiple: false,
-  //       label: 'label',
-  //       value: 'value',
-  //       children: 'children'
-  //     }
-  //   },
-  //   'show-all-levels': true,
-  //   disabled: false,
-  //   clearable: true,
-  //   filterable: false,
-  //   separator: '/'
-  // },
-  // {
-  //   __config__: {
-  //     label: '开关',
-  //     tag: 'el-switch',
-  //     tagIcon: 'switch',
-  //     defaultValue: false,
-  //     span: 24,
-  //     showLabel: true,
-  //     labelWidth: null,
-  //     layout: 'colFormItem',
-  //     required: true,
-  //     regList: []
-  //   },
-  //   style: {},
-  //   disabled: false,
-  //   'active-text': '',
-  //   'inactive-text': '',
-  //   'active-color': null,
-  //   'inactive-color': null,
-  //   'active-value': true,
-  //   'inactive-value': false
-  // },
-  // {
-  //   __config__: {
-  //     label: '滑块',
-  //     tag: 'el-slider',
-  //     tagIcon: 'slider',
-  //     defaultValue: null,
-  //     span: 24,
-  //     showLabel: true,
-  //     layout: 'colFormItem',
-  //     labelWidth: null,
-  //     required: true,
-  //     regList: []
-  //   },
-  //   disabled: false,
-  //   min: 0,
-  //   max: 100,
-  //   step: 1,
-  //   'show-stops': false,
-  //   range: false
-  // },
-  // {
-  //   __config__: {
   //     label: '时间选择',
   //     tag: 'el-time-picker',
   //     tagIcon: 'time',
@@ -403,44 +295,6 @@ export const basicComponents = [
   //   format: 'yyyy-MM-dd',
   //   'value-format': 'yyyy-MM-dd',
   //   readonly: false
-  // },
-  // {
-  //   __config__: {
-  //     label: '评分',
-  //     tag: 'el-rate',
-  //     tagIcon: 'rate',
-  //     defaultValue: 0,
-  //     span: 24,
-  //     showLabel: true,
-  //     labelWidth: null,
-  //     layout: 'colFormItem',
-  //     required: true,
-  //     regList: []
-  //   },
-  //   style: {},
-  //   max: 5,
-  //   'allow-half': false,
-  //   'show-text': false,
-  //   'show-score': false,
-  //   disabled: false
-  // },
-  // {
-  //   __config__: {
-  //     label: '颜色选择',
-  //     tag: 'el-color-picker',
-  //     tagIcon: 'color',
-  //     span: 24,
-  //     defaultValue: null,
-  //     showLabel: true,
-  //     labelWidth: null,
-  //     layout: 'colFormItem',
-  //     required: true,
-  //     regList: []
-  //   },
-  //   'show-alpha': false,
-  //   'color-format': '',
-  //   disabled: false,
-  //   size: 'medium'
   // },
 ]
 

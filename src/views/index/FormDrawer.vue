@@ -37,8 +37,6 @@ import { makeUpJs } from '@/components/generator/js'
 import { makeUpCss } from '@/components/generator/css'
 import { exportDefault, beautifierConf, titleCase } from '@/utils/index'
 import ResourceDialog from './ResourceDialog'
-import loadMonaco from '@/utils/loadMonaco'
-import loadBeautifier from '@/utils/loadBeautifier'
 
 const editorObj = {
   html: null,
@@ -114,24 +112,6 @@ export default {
         this.isRefreshCode = true
         this.isIframeLoaded && (this.isInitcode = true) && this.runCode()
       }
-
-      // loadBeautifier(btf => {
-      //   beautifier = btf
-      //   this.htmlCode = beautifier.html(this.htmlCode, beautifierConf.html)
-      //   this.jsCode = beautifier.js(this.jsCode, beautifierConf.js)
-      //   this.cssCode = beautifier.css(this.cssCode, beautifierConf.html)
-
-      //   loadMonaco(val => {
-      //     monaco = val
-      //     this.setEditorValue('editorHtml', 'html', this.htmlCode)
-      //     this.setEditorValue('editorJs', 'js', this.jsCode)
-      //     this.setEditorValue('editorCss', 'css', this.cssCode)
-      //     if (!this.isInitcode) {
-      //       this.isRefreshCode = true
-      //       this.isIframeLoaded && (this.isInitcode = true) && this.runCode()
-      //     }
-      //   })
-      // })
     },
     onClose() {
       this.isInitcode = false

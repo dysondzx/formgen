@@ -27,19 +27,17 @@
             </div>
             <el-input v-model="activeData.__config__.label"
                       placeholder="请输入标题"
-                      oninput="if(value.length > 50)value = value.slice(0, 50)"
-                      @input="changeRenderKey" />
+                      oninput="if(value.length > 50)value = value.slice(0, 50)" />
           </el-form-item>
           <el-form-item v-if="activeData.placeholder!==undefined"
                         label="">
             <div>
               <span class="st-headline">提示文字</span>
               <span class="st-hint">最多50字</span>
-            </div>            
+            </div>
             <el-input v-model="activeData.placeholder"
                       placeholder="请输入"
-                      oninput="if(value.length > 50)value = value.slice(0, 50)"
-                      @input="changeRenderKey" />
+                      oninput="if(value.length > 50)value = value.slice(0, 50)" />
           </el-form-item>
           <el-form-item v-if="activeData['start-placeholder']!==undefined"
                         label="开始占位">
@@ -62,11 +60,6 @@
             <el-input-number v-model="activeData.autosize.minRows"
                              :min="1"
                              placeholder="可见行数" />
-          </el-form-item>
-          <el-form-item v-if="isShowStep"
-                        label="步长">
-            <el-input-number v-model="activeData.step"
-                             placeholder="步数" />
           </el-form-item>
           <el-form-item v-if="activeData.maxlength !== undefined"
                         label="最多输入">
@@ -558,7 +551,7 @@ export default {
       this.operationType = 'run'
     },
     save() {
-      this.AssembleFormData() //组合form的JSON和drawingList的JSON
+      this.AssembleFormData() // 组合form的JSON和drawingList的JSON
       console.log('调用保存接口:', this.formData)
     },
     generate(data) {
@@ -694,9 +687,6 @@ export default {
       this.$set(this.activeData.__config__, 'defaultValue', null)
       this.$set(this.activeData, 'value-format', valueFormat)
       this.$set(this.activeData, 'format', val)
-    },
-    spanChange(val) {
-      this.formConf.span = val
     },
     multipleChange(val) {
       this.$set(this.activeData.__config__, 'defaultValue', val ? [] : '')

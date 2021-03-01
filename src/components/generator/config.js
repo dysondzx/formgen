@@ -160,7 +160,7 @@ export const basicComponents = [
       span: 24,
       showTip: false,
       buttonText: '点击上传',
-      regList: [],
+      // regList: [],
       fileSize: 2,
       sizeUnit: 'MB',
       remark: null
@@ -315,7 +315,6 @@ export const layoutComponents = [
       showLabel: false,
       tag: 'remark-text',
       tagIcon: 'input',
-      required: true,
       layout: 'colFormItem',
       span: 24
     },
@@ -324,10 +323,7 @@ export const layoutComponents = [
     },
     value: null,
     placeholder: '请输入说明文字',
-    clearable: false,
-    maxlength: 50,
-    readonly: true,
-    disabled: false
+    maxlength: 50
   },
   {
     __config__: {
@@ -338,25 +334,12 @@ export const layoutComponents = [
       tagIcon: 'upload',
       layout: 'colFormItem',
       labelWidth: null,
-      required: true,
-      span: 24,
-      showTip: false,
-      buttonText: '点击附件上传',
-      regList: [],
-      fileSize: 2,
-      sizeUnit: 'MB'
+      span: 24
     },
     __slot__: {
-      'list-type': true,
       fileList: []
     },
-    action: '/posts/',
-    disabled: false,
-    accept: '',
-    name: 'file',
-    'auto-upload': true,
-    'list-type': 'text',
-    multiple: true
+    action: '/posts/'
   }
 ]
 

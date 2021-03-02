@@ -3,7 +3,7 @@
     <div class="left-board">
       <div class="logo-wrapper">
         <div class="logo">
-          <i class="el-icon-back" /> <span class="textlogo">组团计划申请</span> <i class="el-icon-setting" />
+          <i class="el-icon-back" /> <span class="textlogo">团组计划申请</span> <i class="el-icon-setting" />
         </div>
       </div>
       <el-scrollbar class="left-scrollbar">

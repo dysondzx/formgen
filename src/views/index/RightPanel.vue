@@ -161,7 +161,7 @@
                       @input="setTimeValue($event)" />
           </el-form-item>
           <template v-if="['el-checkbox-group'].indexOf(activeData.__config__.tag) > -1">
-            <el-divider>选项</el-divider>
+            <el-divider class="checkbox-text">选项</el-divider>
             <draggable :list="activeData.__slot__.options"
                        :animation="340"
                        group="selectItem"
@@ -172,23 +172,25 @@
                 <div class="select-line-icon option-drag">
                   <i class="el-icon-s-operation" />
                 </div>
-                <el-checkbox :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item)"></el-checkbox>
+                <el-checkbox class="select-box" :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item)"></el-checkbox>
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
-                <el-input placeholder="选项值"
+                <!-- <el-input placeholder="选项值"
                           size="small"
                           :value="item.value"
-                          @input="setOptionValue(item, $event)" />
+                          @input="setOptionValue(item, $event)" /> -->
                 <div class="close-btn select-line-icon"
                      @click="activeData.__slot__.options.splice(index, 1)">
                   <i class="el-icon-remove-outline" />
                 </div>
+                <div class="select-line-icon option-drag">
+                  <i class="el-icon-s-operation" />
+                </div>
               </div>
             </draggable>
-            <div style="margin-left: 20px;">
+            <div>
               <el-button style="padding-bottom: 0"
-                         icon="el-icon-circle-plus-outline"
                          type="text"
                          @click="addSelectItem">
                 添加选项
@@ -198,7 +200,7 @@
           </template>
 
           <template v-if="'el-select' === activeData.__config__.tag && activeData.multiple">
-            <el-divider>选项</el-divider>
+            <el-divider class="checkbox-text">选项</el-divider>
             <draggable :list="activeData.__slot__.options"
                        :animation="340"
                        group="selectItem"
@@ -243,26 +245,25 @@
               <div v-for="(item, index) in activeData.__slot__.options"
                    :key="index"
                    class="select-item">
-                <div class="select-line-icon option-drag">
-                  <i class="el-icon-s-operation" />
-                </div>
-                <el-radio :key="activeData.__config__.tag + index" v-model="activeData.__config__.defaultValue" :label="item.value"><span></span></el-radio>
+                <el-radio class="select-radio" :key="activeData.__config__.tag + index" v-model="activeData.__config__.defaultValue" :label="item.value"><span></span></el-radio>
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
-                <el-input placeholder="选项值"
+                <!-- <el-input placeholder="选项值"
                           size="small"
                           :value="item.value"
-                          @input="setOptionValue(item, $event)" />
+                          @input="setOptionValue(item, $event)" /> -->
                 <div class="close-btn select-line-icon"
                      @click="activeData.__slot__.options.splice(index, 1)">
                   <i class="el-icon-remove-outline" />
                 </div>
+                <div class="select-line-icon option-drag">
+                  <i class="el-icon-s-operation" />
+                </div>
               </div>
             </draggable>
-            <div style="margin-left: 20px;">
+            <div>
               <el-button style="padding-bottom: 0"
-                         icon="el-icon-circle-plus-outline"
                          type="text"
                          @click="addSelectItem">
                 添加选项
@@ -364,7 +365,8 @@
           </el-form-item>
           <el-form-item v-if="activeData.__config__.tag === 'remark-text'"
                         class="remark-item"
-                        label="说明文字">
+                        label="">
+            <span class="remark-title">说明文字</span>
             <span class="remark-tip">最多{{ activeData.maxlength?activeData.maxlength:50 }}字</span>
             <el-input v-model="activeData.__slot__.content"
                       type="textarea"
@@ -397,7 +399,8 @@
               </div>
             </el-upload>
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.remark !== undefined" class="remark-item" label="描述">
+          <el-form-item v-if="activeData.__config__.remark !== undefined" class="remark-item st-describe" label="">
+            <span class="st-describe-text">描述</span>
             <span class="remark-tip">最多50字</span>
             <el-input v-model="activeData.__config__.remark"
                       type="textarea"
@@ -829,14 +832,26 @@ export default {
   }
   .el-form-item.remark-item {
     .el-form-item__content {
-      margin-left: 24px !important;
+      // margin-left: 24px !important;
+    }
+    .st-describe-text{
+      color: #333;
+      margin-right: 10px;
+    }
+    .remark-title{
+      color: #333;
+      margin-right: 10px;
     }
     .remark-tip {
-      color: #dcdfe6;
+      color: #999;
+      font-size: 14px;
       .el-form-item__content {
         margin-left: 24px;
       }
     }
+  }
+  .el-radio__label {
+    padding-left: 0px;
   }
 }
 </style>
@@ -853,7 +868,14 @@ export default {
   & .el-input + .el-input {
     margin-left: 4px;
   }
+  .el-checkbox:last-of-type{
+    margin: 6px 8px 0px 0px ;  
+  }
+  .select-radio{
+    margin: 6px 8px 0px 0px;
+  }
 }
+
 .select-item + .select-item {
   margin-top: 4px;
 }
@@ -898,5 +920,8 @@ export default {
 }
 .node-icon {
   color: #bebfc3;
+}
+.st-treenod{
+  margin-left: 0px;
 }
 </style>

@@ -52,6 +52,14 @@ input, textarea{
 .right-scrollbar {
   .el-scrollbar__view {
     padding: 12px 18px 15px 15px;
+    .checkbox-text{
+      background: #fff;
+      margin: 48px 0px 16px -8px;
+    .is-center{
+      color: #333;
+      left: 22px;
+    }  
+    }
   }
   .el-form-item__label{
     text-align: left;
@@ -69,6 +77,10 @@ input, textarea{
     color: #999;
     font-size: 14px;
     margin-left: 10px;
+  }
+  .el-divider{
+    background-color:#fff;
+    margin: 0px 0px 32px 0px;
   }
 }
 .el-scrollbar__wrap {

@@ -150,6 +150,64 @@ export const basicComponents = [
   },
   {
     __config__: {
+      label: '单选下拉框',
+      showLabel: true,
+      labelWidth: null,
+      tag: 'el-select',
+      tagIcon: 'select',
+      defaultValue: '',
+      layout: 'colFormItem',
+      span: 24,
+      required: true,
+      regList: []
+    },
+    __slot__: {
+      options: [{
+        label: '选项一',
+        value: 1
+      }, {
+        label: '选项二',
+        value: 2
+      }]
+    },
+    placeholder: '请选择',
+    style: { width: '100%' },
+    clearable: true,
+    disabled: false,
+    filterable: false,
+    multiple: false
+  },
+  {
+    __config__: {
+      label: '多选下拉框',
+      showLabel: true,
+      labelWidth: null,
+      tag: 'el-select',
+      tagIcon: 'select',
+      defaultValue: [],
+      layout: 'colFormItem',
+      span: 24,
+      required: true,
+      regList: []
+    },
+    __slot__: {
+      options: [{
+        label: '选项一',
+        value: 1
+      }, {
+        label: '选项二',
+        value: 2
+      }]
+    },
+    placeholder: '请选择',
+    style: { width: '100%' },
+    clearable: true,
+    disabled: false,
+    filterable: false,
+    multiple: true
+  },
+  {
+    __config__: {
       label: '附件',
       tag: 'el-upload',
       tagIcon: 'upload',
@@ -176,34 +234,6 @@ export const basicComponents = [
     'list-type': 'text',
     multiple: false
   }
-  // {
-  //   __config__: {
-  //     label: '下拉选择',
-  //     showLabel: true,
-  //     labelWidth: null,
-  //     tag: 'el-select',
-  //     tagIcon: 'select',
-  //     layout: 'colFormItem',
-  //     span: 24,
-  //     required: true,
-  //     regList: []
-  //   },
-  //   __slot__: {
-  //     options: [{
-  //       label: '选项一',
-  //       value: 1
-  //     }, {
-  //       label: '选项二',
-  //       value: 2
-  //     }]
-  //   },
-  //   placeholder: '请选择',
-  //   style: { width: '100%' },
-  //   clearable: true,
-  //   disabled: false,
-  //   filterable: false,
-  //   multiple: false
-  // },
   // {
   //   __config__: {
   //     label: '时间选择',

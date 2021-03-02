@@ -160,7 +160,7 @@
                       placeholder="请输入时间格式"
                       @input="setTimeValue($event)" />
           </el-form-item>
-          <template v-if="['el-checkbox-group', 'el-select'].indexOf(activeData.__config__.tag) > -1">
+          <template v-if="['el-checkbox-group'].indexOf(activeData.__config__.tag) > -1">
             <el-divider>选项</el-divider>
             <draggable :list="activeData.__slot__.options"
                        :animation="340"
@@ -172,7 +172,7 @@
                 <div class="select-line-icon option-drag">
                   <i class="el-icon-s-operation" />
                 </div>
-                <el-checkbox :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item, true)"></el-checkbox>
+                <el-checkbox :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item)"></el-checkbox>
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
@@ -197,7 +197,81 @@
             <el-divider />
           </template>
 
-          <template v-if="['el-radio-group'].indexOf(activeData.__config__.tag) > -1">
+          <template v-if="'el-select' === activeData.__config__.tag && activeData.multiple">
+            <el-divider>选项</el-divider>
+            <draggable :list="activeData.__slot__.options"
+                       :animation="340"
+                       group="selectItem"
+                       handle=".option-drag">
+              <div v-for="(item, index) in activeData.__slot__.options"
+                   :key="index"
+                   class="select-item">
+                <div class="select-line-icon option-drag">
+                  <i class="el-icon-s-operation" />
+                </div>
+                <el-checkbox :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item)"></el-checkbox>
+                <el-input v-model="item.label"
+                          placeholder="选项名"
+                          size="small" />
+                <el-input placeholder="选项值"
+                          size="small"
+                          :value="item.value"
+                          @input="setOptionValue(item, $event)" />
+                <div class="close-btn select-line-icon"
+                     @click="activeData.__slot__.options.splice(index, 1)">
+                  <i class="el-icon-remove-outline" />
+                </div>
+              </div>
+            </draggable>
+            <div style="margin-left: 20px;">
+              <el-button style="padding-bottom: 0"
+                         icon="el-icon-circle-plus-outline"
+                         type="text"
+                         @click="addSelectItem">
+                添加选项
+              </el-button>
+            </div>
+            <el-divider />
+          </template>
+
+          <template v-if="'el-select' === activeData.__config__.tag && !activeData.multiple">
+            <el-divider>选项</el-divider>
+            <draggable :list="activeData.__slot__.options"
+                       :animation="340"
+                       group="selectItem"
+                       handle=".option-drag">
+              <div v-for="(item, index) in activeData.__slot__.options"
+                   :key="index"
+                   class="select-item">
+                <div class="select-line-icon option-drag">
+                  <i class="el-icon-s-operation" />
+                </div>
+                <el-radio :key="activeData.__config__.tag + index" v-model="activeData.__config__.defaultValue" :label="item.value"><span></span></el-radio>
+                <el-input v-model="item.label"
+                          placeholder="选项名"
+                          size="small" />
+                <el-input placeholder="选项值"
+                          size="small"
+                          :value="item.value"
+                          @input="setOptionValue(item, $event)" />
+                <div class="close-btn select-line-icon"
+                     @click="activeData.__slot__.options.splice(index, 1)">
+                  <i class="el-icon-remove-outline" />
+                </div>
+              </div>
+            </draggable>
+            <div style="margin-left: 20px;">
+              <el-button style="padding-bottom: 0"
+                         icon="el-icon-circle-plus-outline"
+                         type="text"
+                         @click="addSelectItem">
+                添加选项
+              </el-button>
+            </div>
+            <el-divider />
+          </template>
+
+          <template v-if="'el-radio-group' === activeData.__config__.tag">
             <el-divider>选项</el-divider>
             <draggable :list="activeData.__slot__.options"
                        :animation="340"
@@ -279,11 +353,11 @@
                         label="能否搜索">
             <el-switch v-model="activeData.filterable" />
           </el-form-item>
-          <el-form-item v-if="activeData.__config__.tag === 'el-select'"
+          <!-- <el-form-item v-if="activeData.__config__.tag === 'el-select'"
                         label="是否多选">
             <el-switch v-model="activeData.multiple"
                        @change="multipleChange" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item v-if="activeData.__config__.required !== undefined"
                         label="是否必填">
             <el-switch v-model="activeData.__config__.required" />
@@ -552,7 +626,7 @@ export default {
     },
     save() {
       this.AssembleFormData() // 组合form的JSON和drawingList的JSON
-      console.log('调用保存接口:', this.formData)
+      console.log('调用保存接口:', JSON.stringify(this.formData))
     },
     generate(data) {
       const func = this[`exec${titleCase(this.operationType)}`]
@@ -628,7 +702,7 @@ export default {
     addNode(data) {
       this.currentNode.push(data)
     },
-    checkChange(flag, item, isMultiple) {
+    checkChange(flag, item) {
       if (flag) {
         if (this.activeData.__config__.defaultValue.indexOf(item.value) === -1) {
           this.activeData.__config__.defaultValue.push(item.value)

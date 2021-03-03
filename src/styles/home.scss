@@ -215,6 +215,7 @@ $lighterBlue: #409EFF;
     .el-input__inner {
       height: 32px;
       line-height: 32px;
+      color: #333;
     }
   }
 }
@@ -233,6 +234,9 @@ $lighterBlue: #409EFF;
   }
   .el-form-item__content{
     margin-left: 8px !important;
+  }
+  .el-checkbox__label{
+    color: #333;
   }
 }
 .drawing-row-item{
@@ -293,7 +297,7 @@ $lighterBlue: #409EFF;
     z-index: 1;
   }
   & > .drawing-item-copy{
-    right: 80px;
+    right: 44px;
     border-color: $lighterBlue;
     color: $lighterBlue;
     background: #fff;
@@ -303,7 +307,7 @@ $lighterBlue: #409EFF;
     }
   }
   & > .drawing-item-delete{
-    right: 50px;
+    right: 12px;
     border-color: #F56C6C;
     color: #F56C6C;
     background: #fff;

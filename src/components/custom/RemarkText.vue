@@ -7,7 +7,7 @@
 <style lang="scss">
   .remark-text-container {
     padding: 5px 10px;
-    background: #f390a3;
+    background: #fff;
     min-height: 36px;
   }
 </style>

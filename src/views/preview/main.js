@@ -1,8 +1,11 @@
 import Vue from 'vue'
+import elementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import { loadScriptQueue } from '@/utils/loadScript'
 import axios from 'axios'
 import install from '@/components/custom/install'
 
+Vue.use(elementUI)
 Vue.use(install)
 Vue.prototype.$axios = axios
 

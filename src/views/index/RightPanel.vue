@@ -470,6 +470,7 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import { isArray } from 'util'
 import TreeNodeDialog from '@/views/index/TreeNodeDialog'
 import {
@@ -502,6 +503,7 @@ let beautifier
 
 export default {
   components: {
+    draggable,
     TreeNodeDialog,
     IconsDialog,
     FormDrawer,

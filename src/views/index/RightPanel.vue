@@ -871,7 +871,7 @@ export default {
     margin-left: 4px;
   }
   .el-checkbox:last-of-type{
-    margin: 6px 8px 0px 0px ;  
+    margin: 6px 8px 0px 0px;
   }
   .select-radio{
     margin: 6px 8px 0px 0px;

@@ -169,17 +169,15 @@
               <div v-for="(item, index) in activeData.__slot__.options"
                    :key="index"
                    class="select-item">
-                <div class="select-line-icon option-drag">
-                  <i class="el-icon-s-operation" />
-                </div>
                 <el-checkbox class="select-box" :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item)"></el-checkbox>
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
-                <!-- <el-input placeholder="选项值"
+                <el-input placeholder="选项值"
                           size="small"
+                          class="st-none"
                           :value="item.value"
-                          @input="setOptionValue(item, $event)" /> -->
+                          @input="setOptionValue(item, $event)" />
                 <div class="close-btn select-line-icon"
                      @click="activeData.__slot__.options.splice(index, 1)">
                   <i class="el-icon-remove-outline" />
@@ -208,26 +206,26 @@
               <div v-for="(item, index) in activeData.__slot__.options"
                    :key="index"
                    class="select-item">
-                <div class="select-line-icon option-drag">
-                  <i class="el-icon-s-operation" />
-                </div>
                 <el-checkbox :key="activeData.__config__.tag + index" :checked="activeData.__config__.defaultValue.indexOf(item.value)>-1" @change="flag => checkChange(flag, item)"></el-checkbox>
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
                 <el-input placeholder="选项值"
                           size="small"
+                          class="st-none"
                           :value="item.value"
                           @input="setOptionValue(item, $event)" />
                 <div class="close-btn select-line-icon"
                      @click="activeData.__slot__.options.splice(index, 1)">
                   <i class="el-icon-remove-outline" />
                 </div>
+                <div class="select-line-icon option-drag">
+                  <i class="el-icon-s-operation" />
+                </div>
               </div>
             </draggable>
-            <div style="margin-left: 20px;">
+            <div>
               <el-button style="padding-bottom: 0"
-                         icon="el-icon-circle-plus-outline"
                          type="text"
                          @click="addSelectItem">
                 添加选项
@@ -237,7 +235,7 @@
           </template>
 
           <template v-if="'el-select' === activeData.__config__.tag && !activeData.multiple">
-            <el-divider>选项</el-divider>
+            <el-divider class="checkbox-text">选项</el-divider>
             <draggable :list="activeData.__slot__.options"
                        :animation="340"
                        group="selectItem"
@@ -249,10 +247,11 @@
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
-                <!-- <el-input placeholder="选项值"
+                <el-input placeholder="选项值"
                           size="small"
+                          class="st-none"
                           :value="item.value"
-                          @input="setOptionValue(item, $event)" /> -->
+                          @input="setOptionValue(item, $event)" />
                 <div class="close-btn select-line-icon"
                      @click="activeData.__slot__.options.splice(index, 1)">
                   <i class="el-icon-remove-outline" />
@@ -273,7 +272,7 @@
           </template>
 
           <template v-if="'el-radio-group' === activeData.__config__.tag">
-            <el-divider>选项</el-divider>
+            <el-divider class="checkbox-text">选项</el-divider>
             <draggable :list="activeData.__slot__.options"
                        :animation="340"
                        group="selectItem"
@@ -281,26 +280,26 @@
               <div v-for="(item, index) in activeData.__slot__.options"
                    :key="index"
                    class="select-item">
-                <div class="select-line-icon option-drag">
-                  <i class="el-icon-s-operation" />
-                </div>
                 <el-radio :key="activeData.__config__.tag + index" v-model="activeData.__config__.defaultValue" :label="item.value"><span></span></el-radio>
                 <el-input v-model="item.label"
                           placeholder="选项名"
                           size="small" />
                 <el-input placeholder="选项值"
                           size="small"
+                          class="st-none"
                           :value="item.value"
                           @input="setOptionValue(item, $event)" />
                 <div class="close-btn select-line-icon"
                      @click="activeData.__slot__.options.splice(index, 1)">
                   <i class="el-icon-remove-outline" />
                 </div>
+                <div class="select-line-icon option-drag">
+                  <i class="el-icon-s-operation" />
+                </div>
               </div>
             </draggable>
-            <div style="margin-left: 20px;">
+            <div>
               <el-button style="padding-bottom: 0"
-                         icon="el-icon-circle-plus-outline"
                          type="text"
                          @click="addSelectItem">
                 添加选项
@@ -875,6 +874,12 @@ export default {
   }
   .select-radio{
     margin: 6px 8px 0px 0px;
+  }
+  .el-radio{
+    margin: 8px 8px 0px 0px;
+  }
+  .st-none{
+    display: none;
   }
 }
 

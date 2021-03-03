@@ -203,6 +203,7 @@ $lighterBlue: #409EFF;
     .el-form-item__label{
       color: #333;
       float: none;
+      margin-left: 10px;
     }
     .el-form-item__content{
       margin-left: 8px !important;
@@ -210,6 +211,9 @@ $lighterBlue: #409EFF;
   }
   .el-form-item{
     margin-bottom: 15px;
+    .el-form-item__label:before{
+      display: none;
+    }
   }
   .el-input--medium {
     .el-input__inner {
@@ -231,6 +235,7 @@ $lighterBlue: #409EFF;
   .el-form-item__label{
     color: #333;
     float: none;
+    margin-left: 10px;
   }
   .el-form-item__content{
     margin-left: 8px !important;
@@ -243,15 +248,13 @@ $lighterBlue: #409EFF;
   position: relative;
   cursor: move;
   box-sizing: border-box;
-  border: 1px dashed #ccc;
-  border-radius: 3px;
-  padding: 0 2px;
+  border: 1px dashed #ff9c9c;
   margin-bottom: 15px;
   .drawing-row-item {
     margin-bottom: 2px;
   }
   .el-col{
-    margin-top: 22px;
+    // margin-top: 22px;
   }
   .el-form-item{
     margin-bottom: 0;
@@ -260,7 +263,8 @@ $lighterBlue: #409EFF;
     min-height: 80px;
   }
   &.active-from-item{
-    border: 1px dashed $lighterBlue;
+    border: 1px dashed #ff9c9c;
+    background: #ffdfdf;
   }
   .component-name{
     position: absolute;

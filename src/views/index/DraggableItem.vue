@@ -62,7 +62,7 @@ const layouts = {
       <el-col span={config.span}>
         <el-row gutter={config.gutter} class={className}
           nativeOnClick={event => { activeItem(currentItem); event.stopPropagation() }}>
-          <span class="component-name">{config.componentName}</span>
+          
           <draggable list={config.children || []} animation={340}
             group="componentsGroup" class="drag-wrapper">
             {child}

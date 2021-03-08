@@ -1,6 +1,6 @@
 var http = require('http')
-// 导入querystring模块（解析post请求数据）
-var querystring = require('querystring')
+var fs = require('fs')
+var path = require('path')
 var server = http.createServer()
 server.on('request', function (req, res) {
     //设置允许跨域的域名，*代表允许任意域名跨域
@@ -9,8 +9,7 @@ server.on('request', function (req, res) {
     res.setHeader("Access-Control-Allow-Headers","content-type,XFILENAME,XFILECATEGORY,XFILESIZE")
     var url = req.url;
     // 1.通过判断url路径和请求方式来判断是否是表单提交
-    if (url == "/parserEval") {
-        console.log('进来了')
+    if (url == "/parserEval" && req.method === 'POST') {
         //创建空字符叠加数据片段
         var data = ''
 
@@ -22,13 +21,13 @@ server.on('request', function (req, res) {
         // 3.当接收表单提交的数据完毕之后，就可以进一步处理了
         //注册end事件，所有数据接收完成会执行一次该方法
         req.on('end', function () {
-
-            //（1）.对url进行解码（url会对中文进行编码）
-            data = decodeURI(data);
-            data = eval('('+data+')')
-            console.log(data.methods.submitForm)
-
-            res.end(JSON.stringify(data))
+            fs.writeFile(path.join(__dirname, '../src/views/preview/Preview.vue'), data, function (error) {
+                if (error) {
+                  res.end("400")
+                } else {
+                  res.end("200")
+                }
+              })
         })
     }
 })

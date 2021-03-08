@@ -4,6 +4,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import { loadScriptQueue } from '@/utils/loadScript'
 import axios from 'axios'
 import install from '@/components/custom/install'
+import Preview from '@/views/preview/Preview.vue'
 
 Vue.use(elementUI)
 Vue.use(install)
@@ -41,17 +42,30 @@ function init(event) {
 }
 
 function newVue(main, html) {
-  main = eval(`(${main})`)
-  main.template = `<div>${html}</div>`
-  new Vue({
-    components: {
-      child: main
-    },
-    data() {
-      return {
-        visible: true
-      }
-    },
-    template: '<div><child/></div>'
-  }).$mount('#app')
+
+  main = `<template>
+  <div>
+    ${html}
+  </div>
+  </template>
+  <script>
+  ${main}
+  </script>` 
+  axios.post("http://127.0.0.1:3000/parserEval", main, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8"
+    }
+  }).then(res=>{
+    new Vue({
+      components: {
+        child: Preview
+      },
+      data() {
+        return {
+          visible: true
+        }
+      },
+      template: '<div><child/></div>'
+    }).$mount('#app')
+  })
 }

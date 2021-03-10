@@ -195,7 +195,7 @@ $lighterBlue: #409EFF;
       background: #ffdfdf;
     }
     & > .drawing-item-copy, & > .drawing-item-delete{
-      display: initial;
+      display: inline-block;
     }
     & > .component-name{
       color: $lighterBlue;

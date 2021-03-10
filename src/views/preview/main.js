@@ -4,6 +4,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import { loadScriptQueue } from '@/utils/loadScript'
 import axios from 'axios'
 import install from '@/components/custom/install'
+import { transform } from '@babel/standalone'
 
 Vue.use(elementUI)
 Vue.use(install)
@@ -41,7 +42,11 @@ function init(event) {
 }
 
 function newVue(main, html) {
-  main = eval(`(${main})`)
+  let obj = ''
+  var output = transform('obj = ' + main, { presets: ['env'], sourceType: 'script' }).code;
+  eval(output)
+  main = obj
+  // main = eval(`(${main})`)
   main.template = `<div>${html}</div>`
   new Vue({
     components: {

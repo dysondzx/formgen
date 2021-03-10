@@ -162,8 +162,8 @@ export default {
             data: {
               generateConf: this.generateConf,
               html: this.htmlCode,
-              // js: jsCodeStr.replace(exportDefault, ''),
-              js: jsCodeStr,
+              js: jsCodeStr.replace(exportDefault, ''),
+              // js: jsCodeStr,
               css: this.cssCode,
               scripts: this.scripts,
               links: this.links

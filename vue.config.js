@@ -46,7 +46,7 @@ module.exports = {
   },
   productionSourceMap: false,
   runtimeCompiler: true,
-  transpileDependencies: ['_@babel_parser@7.13.9@@babel', '@babel', 'clipboard'],
+  transpileDependencies: ['_@babel_parser@7.13.10@@babel', '@babel', 'clipboard'],
   lintOnSave: false,
   configureWebpack: {
     externals: {

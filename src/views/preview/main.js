@@ -42,11 +42,14 @@ function init(event) {
 }
 
 function newVue(main, html) {
-  let obj = ''
-  var output = transform('obj = ' + main, { presets: ['es2015'], sourceType: 'script' }).code;
-  eval(output)
-  main = obj
-  // main = eval(`(${main})`)
+  if (window.ActiveXObject || 'ActiveXObject' in window) {
+    let obj = ''
+    var output = transform('obj = ' + main, { presets: ['es2015'], sourceType: 'script' }).code;
+    eval(output)
+    main = obj
+  } else {
+    main = eval(`(${main})`)
+  }
   main.template = `<div>${html}</div>`
   new Vue({
     components: {

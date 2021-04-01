@@ -12,7 +12,6 @@
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
-    "@babel/parser": "^7.7.4",
     "@babel/standalone": "^7.13.10",
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",

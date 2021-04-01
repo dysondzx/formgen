@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-import { parse } from '@babel/parser'
 import ClipboardJS from 'clipboard'
 import { saveAs } from 'file-saver'
 import {
@@ -144,43 +143,27 @@ export default {
     runCode() {
       const jsCodeStr = this.jsCode
       try {
-        const ast = parse(jsCodeStr, { sourceType: 'module' })
-        const astBody = ast.program.body
-        if (astBody.length > 1) {
-          this.$confirm(
-            'js格式不能识别，仅支持修改export default的对象内容',
-            '提示',
-            {
-              type: 'warning'
-            }
-          )
-          return
-        }
-        if (astBody[0].type === 'ExportDefaultDeclaration') {
-          const postData = {
-            type: 'refreshFrame',
-            data: {
-              generateConf: this.generateConf,
-              html: this.htmlCode,
-              js: jsCodeStr.replace(exportDefault, ''),
-              // js: jsCodeStr,
-              css: this.cssCode,
-              scripts: this.scripts,
-              links: this.links
-            }
+        const postData = {
+          type: 'refreshFrame',
+          data: {
+            generateConf: this.generateConf,
+            html: this.htmlCode,
+            js: jsCodeStr.replace(exportDefault, ''),
+            // js: jsCodeStr,
+            css: this.cssCode,
+            scripts: this.scripts,
+            links: this.links
           }
-          this.$refs.previewPage.contentWindow.postMessage(
-            postData,
-            location.origin
-          )
-          setTimeout(() => {
-            this.$nextTick(() => {
-              this.$refs.previewPage.height = this.$refs.previewPage.contentWindow.document.body.scrollHeight
-            })
-          }, 50)
-        } else {
-          this.$message.error('请使用export default')
         }
+        this.$refs.previewPage.contentWindow.postMessage(
+          postData,
+          location.origin
+        )
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.$refs.previewPage.height = this.$refs.previewPage.contentWindow.document.body.scrollHeight
+          })
+        }, 50)
       } catch (err) {
         this.$message.error(`js错误：${err}`)
         console.error(err)
